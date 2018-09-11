@@ -2,4 +2,6 @@
     <string name="app_name">Compresion</string>
     <string name="comprimir">Comprimir</string>
     <string name="descomprimir">Desomprimir</string>
+    <string name="nav_open">Abrir navigation drawer</string>
+    <string name="nav_close">Cerrar navigation drawer</string>
 </resources>

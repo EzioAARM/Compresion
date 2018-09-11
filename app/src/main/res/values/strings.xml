@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Compresion</string>
+    <string name="comprimir">Comprimir</string>
+    <string name="descomprimir">Desomprimir</string>
 </resources>

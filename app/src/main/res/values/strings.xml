@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Compresion</string>
+    <string name="compresiones">Compresiones</string>
     <string name="comprimir">Comprimir</string>
     <string name="descomprimir">Desomprimir</string>
     <string name="nav_open">Abrir navigation drawer</string>

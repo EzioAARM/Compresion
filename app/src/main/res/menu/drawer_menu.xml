@@ -5,6 +5,10 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/compresiones"
+            android:icon="@drawable/ic_compresiones_light"
+            android:title="@string/compresiones" />
+        <item
             android:id="@+id/comprimir"
             android:icon="@drawable/ic_comprimir_light"
             android:title="@string/comprimir" />

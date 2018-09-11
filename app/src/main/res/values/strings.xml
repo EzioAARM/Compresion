@@ -5,4 +5,5 @@
     <string name="descomprimir">Desomprimir</string>
     <string name="nav_open">Abrir navigation drawer</string>
     <string name="nav_close">Cerrar navigation drawer</string>
+    <string name="my_comp">Mis compresiones</string>
 </resources>

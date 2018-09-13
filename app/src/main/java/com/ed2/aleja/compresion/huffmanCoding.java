@@ -17,30 +17,44 @@ public class huffmanCoding {
         getSimbolos(ruta);
     }
 
-    public boolean checkR (char ch){
+    public void getFrecuencias (char ch){
 
-        boolean flag = false;
+
         for (int i = 0; i < simbolos.size();i++) {
             if(ch == simbolos.get(i)) {
                 times++;
-                flag = true;
+            }
+            else if( simbolos.isEmpty() == true){
+                times++;
+            }
+            else {
+
             }
         }
-        return flag;
     }
 
     public void getSimbolos(String ruta){
         try {
             FileReader Alector = new FileReader(ruta);
             BufferedReader lector = new BufferedReader(Alector);
-            char ch = (char)lector.read();
+            int ch = lector.read();
+            char caracter = (char)ch;
             while (ch != -1)
             {
-                if(checkR(ch))
-                {
-                    simbolos.add(ch);
+                for (int i = 0; i < simbolos.size(); i++){
+                    if(caracter == simbolos.get(i)){
+                        break;
+                    }
+                    else if(i == simbolos.size() -1) {
+                        simbolos.add(caracter);
+                    }
                 }
-
+                /*if(checkR(caracter))
+                {
+                    simbolosO.put(times, ch);
+                }*/
+                ch = lector.read();
+                caracter = (char)ch;
             }
 
         }

@@ -1,8 +1,10 @@
 package com.ed2.aleja.compresion;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.OpenableColumns;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,6 +14,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.File;
+import java.io.IOException;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -41,14 +46,28 @@ public class ComprimirFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         CharSequence texto = "";
+        Cursor cursor = null;
+        String nombre = null;
         if (resultCode == RESULT_CANCELED) {
             texto = "No se selecciono ningún archivo";
             Toast.makeText(this.getContext(), texto, Toast.LENGTH_SHORT);
-        }
-        if ((resultCode == RESULT_OK) && (requestCode == valorRetornado )) {
+        } else if ((resultCode == RESULT_OK) && (requestCode == valorRetornado )) {
             Uri uri = data.getData();
-            TextView mostrarUbicacion = (TextView) rootView.findViewById(R.id.nombre_archivo);
-            mostrarUbicacion.setText(uri.getPath());
+            File archivo = new File(uri.toString());
+            if (uri.toString().startsWith("content://")) {
+                try {
+                    cursor = getActivity().getContentResolver().query(uri, null, null, null, null);
+                    if (cursor != null && cursor.moveToFirst()) {
+                        nombre = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                    }
+                } finally {
+                    cursor.close();
+                }
+            } else if (uri.toString().startsWith("file://")) {
+                nombre = archivo.getName();
+            }
+            TextView mostrarUbicacion = rootView.findViewById(R.id.nombreArchivo);
+            mostrarUbicacion.setText(nombre);
         }
     }
 }

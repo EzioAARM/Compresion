@@ -11,25 +11,42 @@ import java.util.TreeMap;
 public class huffmanCoding {
     public ArrayList<node> listaNodos = new ArrayList<>();
     public Map<Integer, Character> simbolosO = new TreeMap<Integer, Character>();
-    public  ArrayList<Character> simbolos = new ArrayList<Character>();
+    public ArrayList<Character> simbolos = new ArrayList<Character>();
     public int times;
     public huffmanCoding(String ruta){
         getSimbolos(ruta);
     }
 
-    public void getFrecuencias (char ch){
+    public void getFrecuencias (String ruta){
 
+        try {
+            FileReader Alector = new FileReader(ruta);
+            BufferedReader lector = new BufferedReader(Alector);
+            char actual;
+            for (int i = 0; i < simbolos.size(); i++){
+                int ch = lector.read();
+                char caracter = (char)ch;
+                while (ch != -1) {
+                    if(caracter == simbolos.get(i)){
+                        times++;
+                    }
+                    ch = lector.read();
+                    caracter = (char)ch;
+                }
+                simbolosO.put(times, simbolos.get(i));
+                node nodoActual = new node(times, simbolos.get(i));
+                listaNodos.add(nodoActual);
+            }
+            build();
+        }
+        catch (Exception e){
 
-        for (int i = 0; i < simbolos.size();i++) {
-            if(ch == simbolos.get(i)) {
-                times++;
-            }
-            else if( simbolos.isEmpty() == true){
-                times++;
-            }
-            else {
+        }
+    }
 
-            }
+    public  void build(){
+        for(int i = 0; i < listaNodos.size(); i++) {
+
         }
     }
 
@@ -56,7 +73,7 @@ public class huffmanCoding {
                 ch = lector.read();
                 caracter = (char)ch;
             }
-
+            getFrecuencias(ruta);
         }
         catch (Exception e)
         {

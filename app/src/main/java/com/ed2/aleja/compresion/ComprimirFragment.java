@@ -24,6 +24,8 @@ import static android.app.Activity.RESULT_OK;
 public class ComprimirFragment extends Fragment {
 
     private int valorRetornado = 1;
+    public huffmanCoding compresor;
+    public String nombre;
     View rootView;
 
     @Nullable
@@ -39,6 +41,13 @@ public class ComprimirFragment extends Fragment {
                 startActivityForResult(Intent.createChooser(intent, "Seleccionar archivo"), valorRetornado);
             }
         });
+        Button comprimir = (Button) rootView.findViewById(R.id.comprimir_archivo);
+        comprimir.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                compresor = new huffmanCoding(nombre);
+            }
+        });
         return rootView;
     }
 
@@ -47,7 +56,7 @@ public class ComprimirFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         CharSequence texto = "";
         Cursor cursor = null;
-        String nombre = null;
+        nombre = null;
         if (resultCode == RESULT_CANCELED) {
             texto = "No se selecciono ningún archivo";
             Toast.makeText(this.getContext(), texto, Toast.LENGTH_SHORT);

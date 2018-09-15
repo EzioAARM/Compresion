@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -44,9 +46,34 @@ public class huffmanCoding {
         }
     }
 
-    public  void build(){
-        for(int i = 0; i < listaNodos.size(); i++) {
 
+    public  void build(){
+        Collections.sort(listaNodos, new Comparator<node>() {
+            @Override
+            public int compare(node o1, node o2) {
+                int temp = 0;
+                if(o1.prob < o2.prob) {
+                    temp = -1;
+                }
+                return temp;
+            }
+        });
+        node temp;
+        int freqT;
+        while (listaNodos.size()>1)
+        {
+            freqT = listaNodos.get(0).prob + listaNodos.get(1).prob;
+            temp = new node(freqT, ' ');
+            Collections.sort(listaNodos, new Comparator<node>() {
+                @Override
+                public int compare(node o1, node o2) {
+                    int temp = 0;
+                    if(o1.prob < o2.prob) {
+                        temp = -1;
+                    }
+                    return temp;
+                }
+            });
         }
     }
 
@@ -73,6 +100,7 @@ public class huffmanCoding {
                 ch = lector.read();
                 caracter = (char)ch;
             }
+            lector.close();
             getFrecuencias(ruta);
         }
         catch (Exception e)

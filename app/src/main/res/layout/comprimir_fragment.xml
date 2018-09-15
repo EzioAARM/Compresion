@@ -23,6 +23,53 @@
         android:drawableLeft="@drawable/ic_upload_dark"
         android:layout_alignRight="@+id/nombreArchivo"
         android:layout_below="@+id/nombreArchivo"
+        android:background="@color/colorSecondary"
         android:text="@string/file_chooser"
         style="@style/ButtonMaterial"/>
+
+    <EditText
+        android:id="@+id/nombre_archivo_compreso"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="125dp"
+        android:inputType="textPersonName"
+        android:textSize="17dp"
+        android:hint="Nombre del archivo compreso" />
+
+        <TextView
+        android:id="@+id/informacion_nombre_compreso"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/nombre_archivo_compreso"
+        android:layout_alignLeft="@id/nombre_archivo_compreso"
+        android:layout_marginLeft="3dp"
+        android:layout_marginTop="40dp"
+        android:textSize="11dp"
+        android:text="No incluir la extensión del archivo" />
+
+    <TextView
+        android:id="@+id/informacion_final_comprimir"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/informacion_nombre_compreso"
+        android:layout_alignLeft="@id/informacion_nombre_compreso"
+        android:layout_marginTop="25dp"
+        android:layout_marginRight="25dp"
+        android:textSize="15dp"
+        android:text="" />
+
+    <Button
+        android:id="@+id/comprimir_archivo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="25dp"
+        android:layout_marginBottom="25dp"
+        android:text="Comprimir"
+        android:drawableLeft="@drawable/ic_comprimir_dark"
+        style="@style/ButtonMaterial" />
 </RelativeLayout>

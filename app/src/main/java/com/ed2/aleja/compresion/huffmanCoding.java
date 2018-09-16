@@ -1,6 +1,9 @@
 package com.ed2.aleja.compresion;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
+import java.io.Console;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -39,6 +42,8 @@ public class huffmanCoding {
                 node nodoActual = new node(times, simbolos.get(i));
                 listaNodos.add(nodoActual);
             }
+            lector.close();
+            Alector.close();
             build();
         }
         catch (Exception e){
@@ -60,10 +65,14 @@ public class huffmanCoding {
         });
         node temp;
         int freqT;
-        while (listaNodos.size()>1)
-        {
+        while (listaNodos.size()>1) {
             freqT = listaNodos.get(0).prob + listaNodos.get(1).prob;
-            temp = new node(freqT, ' ');
+            temp = new node(freqT, 'む');
+            temp.right = listaNodos.get(0);
+            temp.left = listaNodos.get(1);
+            listaNodos.remove(0);
+            listaNodos.remove(1);
+            listaNodos.add(temp);
             Collections.sort(listaNodos, new Comparator<node>() {
                 @Override
                 public int compare(node o1, node o2) {
@@ -75,6 +84,18 @@ public class huffmanCoding {
                 }
             });
         }
+        traverse(listaNodos.get(0));
+    }
+
+    public void traverse(node arbol){
+        node root = arbol;
+        node temp = root;
+        String codeWord = "";
+        while (temp.left != null){
+            temp = temp.left;
+            codeWord = codeWord + "0";
+        }
+
     }
 
     public void getSimbolos(String ruta){
@@ -100,12 +121,13 @@ public class huffmanCoding {
                 ch = lector.read();
                 caracter = (char)ch;
             }
+            Alector.close();
             lector.close();
             getFrecuencias(ruta);
         }
         catch (Exception e)
         {
-
+            Log.println(Log.DEBUG," ", e.toString());
         }
 
     }

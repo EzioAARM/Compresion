@@ -26,6 +26,7 @@ public class ComprimirFragment extends Fragment {
     private int valorRetornado = 1;
     public huffmanCoding compresor;
     public String nombre;
+    public File archivo;
     View rootView;
 
     @Nullable
@@ -45,7 +46,8 @@ public class ComprimirFragment extends Fragment {
         comprimir.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                compresor = new huffmanCoding(nombre);
+                compresor = new huffmanCoding(archivo.toString());
+
             }
         });
         return rootView;
@@ -62,7 +64,7 @@ public class ComprimirFragment extends Fragment {
             Toast.makeText(this.getContext(), texto, Toast.LENGTH_SHORT);
         } else if ((resultCode == RESULT_OK) && (requestCode == valorRetornado )) {
             Uri uri = data.getData();
-            File archivo = new File(uri.toString());
+            archivo = new File(uri.toString());
             if (uri.toString().startsWith("content://")) {
                 try {
                     cursor = getActivity().getContentResolver().query(uri, null, null, null, null);

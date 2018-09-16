@@ -7,7 +7,7 @@ public class node {
         aChar = caracter;
 
     }
-
+    public String codeWord;
     public int prob;
     public char aChar;
     public node left;

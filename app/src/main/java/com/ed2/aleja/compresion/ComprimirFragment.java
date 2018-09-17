@@ -46,7 +46,7 @@ public class ComprimirFragment extends Fragment {
         comprimir.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                compresor = new huffmanCoding(archivo.toString());
+                compresor = new huffmanCoding(archivo.getPath());
 
             }
         });

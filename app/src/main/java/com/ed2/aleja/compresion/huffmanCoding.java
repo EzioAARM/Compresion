@@ -5,7 +5,9 @@ import android.util.Log;
 import java.io.BufferedReader;
 import java.io.Console;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -25,7 +27,8 @@ public class huffmanCoding {
     public void getFrecuencias (String ruta){
 
         try {
-            FileReader Alector = new FileReader(ruta);
+            FileInputStream archivo = new FileInputStream(new File(ruta));
+            InputStreamReader Alector = new InputStreamReader(archivo);
             BufferedReader lector = new BufferedReader(Alector);
             char actual;
             for (int i = 0; i < simbolos.size(); i++){
@@ -100,7 +103,8 @@ public class huffmanCoding {
 
     public void getSimbolos(String ruta){
         try {
-            FileReader Alector = new FileReader(ruta);
+            FileInputStream archivo = new FileInputStream(new File(ruta));
+            InputStreamReader Alector = new InputStreamReader(archivo);
             BufferedReader lector = new BufferedReader(Alector);
             int ch = lector.read();
             char caracter = (char)ch;

@@ -55,7 +55,7 @@ public class huffmanCoding {
             build();
         }
         catch (Exception e){
-
+            Log.println(Log.DEBUG," ", e.toString());
         }
     }
 

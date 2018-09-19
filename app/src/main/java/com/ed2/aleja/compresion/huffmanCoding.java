@@ -24,6 +24,8 @@ public class huffmanCoding {
     public Map<Integer, Character> simbolosO = new TreeMap<Integer, Character>();
     public ArrayList<Character> simbolos = new ArrayList<Character>();
     public int times;
+    public int flag = 1;
+    public Uri miUri;
     private Context Contexto = null;
 
     public huffmanCoding(Uri uri, Context contextoApp){
@@ -34,10 +36,10 @@ public class huffmanCoding {
     public void getFrecuencias (Uri uri){
 
         try {
-            InputStream inputStream = Contexto.getContentResolver().openInputStream(uri);
-            BufferedReader lector = new BufferedReader(new InputStreamReader(inputStream));
             char actual;
             for (int i = 0; i < simbolos.size(); i++){
+                InputStream inputStream = Contexto.getContentResolver().openInputStream(uri);
+                BufferedReader lector = new BufferedReader(new InputStreamReader(inputStream));
                 int ch = lector.read();
                 char caracter = (char)ch;
                 while (ch != -1) {
@@ -60,18 +62,27 @@ public class huffmanCoding {
         }
     }
 
+    public void mySort(){
+
+        int i, j;
+        node temp;
+        for (i = 0; i < listaNodos.size() - 1; i++)
+        {
+            for (j = 0; j < listaNodos.size()-i-1; j++)
+            {
+                if (listaNodos.get(j).prob > listaNodos.get(j+1).prob)
+                {
+                    temp = listaNodos.get(j);
+                    listaNodos.remove(j);
+                    listaNodos.add(j+1, temp);
+                }
+            }
+        }
+
+    }
 
     public  void build(){
-        Collections.sort(listaNodos, new Comparator<node>() {
-            @Override
-            public int compare(node o1, node o2) {
-                int temp = 0;
-                if(o1.prob < o2.prob) {
-                    temp = -1;
-                }
-                return temp;
-            }
-        });
+        mySort();
         node temp;
         int freqT;
         while (listaNodos.size()>1) {
@@ -80,18 +91,9 @@ public class huffmanCoding {
             temp.right = listaNodos.get(0);
             temp.left = listaNodos.get(1);
             listaNodos.remove(0);
-            listaNodos.remove(1);
+            listaNodos.remove(0);
             listaNodos.add(temp);
-            Collections.sort(listaNodos, new Comparator<node>() {
-                @Override
-                public int compare(node o1, node o2) {
-                    int temp = 0;
-                    if(o1.prob < o2.prob) {
-                        temp = -1;
-                    }
-                    return temp;
-                }
-            });
+            mySort();
         }
         traverse(listaNodos.get(0));
     }
@@ -128,6 +130,7 @@ public class huffmanCoding {
                 {
                     simbolosO.put(times, ch);
                 }*/
+                flag++;
                 ch = lector.read();
                 caracter = (char)ch;
             }

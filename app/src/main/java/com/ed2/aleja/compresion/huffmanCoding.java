@@ -25,6 +25,7 @@ public class huffmanCoding {
     public ArrayList<Character> simbolos = new ArrayList<Character>();
     public int times;
     public int flag = 1;
+    public String codeWord;
     public Uri miUri;
     private Context Contexto = null;
 
@@ -99,13 +100,14 @@ public class huffmanCoding {
     }
 
     public void traverse(node arbol){
-        node root = arbol;
-        node temp = root;
-        String codeWord = "";
-        while (temp.left != null){
-            temp = temp.left;
-            codeWord = codeWord + "0";
+        node temp = arbol;
+        if ( temp == null){
+            return;
         }
+        traverse(temp.left);
+        codeWord = codeWord + "0";
+        traverse(temp.right);
+        codeWord = codeWord + "1";
 
     }
 

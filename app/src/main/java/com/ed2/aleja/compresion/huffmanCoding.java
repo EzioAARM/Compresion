@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -23,6 +24,7 @@ public class huffmanCoding {
     public ArrayList<node> listaNodos = new ArrayList<>();
     public Map<Integer, Character> simbolosO = new TreeMap<Integer, Character>();
     public ArrayList<Character> simbolos = new ArrayList<Character>();
+    public ArrayList<node> hojas = new ArrayList<>();
     public int times;
     public int flag = 1;
     public String codeWord;
@@ -97,6 +99,7 @@ public class huffmanCoding {
             mySort();
         }
         traverse(listaNodos.get(0));
+        ArrayList<node> test = hojas;
     }
 
     public void traverse(node arbol){
@@ -116,7 +119,8 @@ public class huffmanCoding {
         }
         traverse(temp.left, "0", codeWordParam + code);
         if (temp.esHoja()){
-            temp.codeWord = codeWordParam;
+            temp.codeWord = codeWordParam + code;
+            hojas.add(temp);
         }
         traverse(temp.right, "1", codeWordParam + code);
 

@@ -5,4 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".CompresosFragment">
 
+    <ListView
+        android:id="@+id/listview_compresos"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" />
 </RelativeLayout>

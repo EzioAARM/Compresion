@@ -38,15 +38,10 @@ public class ComprimirFragment extends Fragment {
         boton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-<<<<<<< HEAD
-                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                intent.setType("*/*");
-=======
                 Intent intent = new Intent()
                         .addCategory(Intent.CATEGORY_OPENABLE)
                         .setType("*/*")
                         .setAction(Intent.ACTION_OPEN_DOCUMENT);
->>>>>>> ee395931246285828fcd26746bb7b16764b44738
                 startActivityForResult(Intent.createChooser(intent, "Seleccionar archivo"), valorRetornado);
             }
         });

@@ -1,12 +1,16 @@
 package com.ed2.aleja.compresion;
 
+import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
+import android.view.ContextMenu;
 
 import java.io.BufferedReader;
 import java.io.Console;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,16 +24,18 @@ public class huffmanCoding {
     public Map<Integer, Character> simbolosO = new TreeMap<Integer, Character>();
     public ArrayList<Character> simbolos = new ArrayList<Character>();
     public int times;
-    public huffmanCoding(String ruta){
-        getSimbolos(ruta);
+    private Context Contexto = null;
+
+    public huffmanCoding(Uri uri, Context contextoApp){
+        Contexto = contextoApp;
+        getSimbolos(uri);
     }
 
-    public void getFrecuencias (String ruta){
+    public void getFrecuencias (Uri uri){
 
         try {
-            FileInputStream archivo = new FileInputStream(new File(ruta));
-            InputStreamReader Alector = new InputStreamReader(archivo);
-            BufferedReader lector = new BufferedReader(Alector);
+            InputStream inputStream = Contexto.getContentResolver().openInputStream(uri);
+            BufferedReader lector = new BufferedReader(new InputStreamReader(inputStream));
             char actual;
             for (int i = 0; i < simbolos.size(); i++){
                 int ch = lector.read();
@@ -46,11 +52,10 @@ public class huffmanCoding {
                 listaNodos.add(nodoActual);
             }
             lector.close();
-            Alector.close();
             build();
         }
         catch (Exception e){
-
+            Log.println(Log.DEBUG," ", e.toString());
         }
     }
 
@@ -101,11 +106,10 @@ public class huffmanCoding {
 
     }
 
-    public void getSimbolos(String ruta){
+    public void getSimbolos(Uri uri){
         try {
-            FileInputStream archivo = new FileInputStream(new File(ruta));
-            InputStreamReader Alector = new InputStreamReader(archivo);
-            BufferedReader lector = new BufferedReader(Alector);
+            InputStream inputStream = Contexto.getContentResolver().openInputStream(uri);
+            BufferedReader lector = new BufferedReader(new InputStreamReader(inputStream));
             int ch = lector.read();
             char caracter = (char)ch;
             while (ch != -1)
@@ -125,9 +129,8 @@ public class huffmanCoding {
                 ch = lector.read();
                 caracter = (char)ch;
             }
-            Alector.close();
             lector.close();
-            getFrecuencias(ruta);
+            getFrecuencias(uri);
         }
         catch (Exception e)
         {

@@ -26,7 +26,8 @@ public class ComprimirFragment extends Fragment {
     private int valorRetornado = 1;
     public huffmanCoding compresor;
     public String nombre;
-    public File archivo;
+    CharSequence texto = "";
+    Uri uri = null;
     View rootView;
 
     @Nullable
@@ -37,8 +38,15 @@ public class ComprimirFragment extends Fragment {
         boton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+<<<<<<< HEAD
                 Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                 intent.setType("*/*");
+=======
+                Intent intent = new Intent()
+                        .addCategory(Intent.CATEGORY_OPENABLE)
+                        .setType("*/*")
+                        .setAction(Intent.ACTION_OPEN_DOCUMENT);
+>>>>>>> ee395931246285828fcd26746bb7b16764b44738
                 startActivityForResult(Intent.createChooser(intent, "Seleccionar archivo"), valorRetornado);
             }
         });
@@ -46,7 +54,7 @@ public class ComprimirFragment extends Fragment {
         comprimir.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                compresor = new huffmanCoding(archivo.getPath());
+                compresor = new huffmanCoding(uri, rootView.getContext());
 
             }
         });
@@ -56,15 +64,13 @@ public class ComprimirFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        CharSequence texto = "";
-        Cursor cursor = null;
-        nombre = null;
         if (resultCode == RESULT_CANCELED) {
             texto = "No se selecciono ningún archivo";
             Toast.makeText(this.getContext(), texto, Toast.LENGTH_SHORT);
         } else if ((resultCode == RESULT_OK) && (requestCode == valorRetornado )) {
-            Uri uri = data.getData();
-            archivo = new File(uri.toString());
+            uri = data.getData();
+            File archivo = new File(uri.toString());
+            Cursor cursor = null;
             if (uri.toString().startsWith("content://")) {
                 try {
                     cursor = getActivity().getContentResolver().query(uri, null, null, null, null);
@@ -75,7 +81,7 @@ public class ComprimirFragment extends Fragment {
                     cursor.close();
                 }
             } else if (uri.toString().startsWith("file://")) {
-                nombre = archivo.getName();
+                nombre = archivo.getAbsolutePath().toString();
             }
             TextView mostrarUbicacion = rootView.findViewById(R.id.nombreArchivo);
             mostrarUbicacion.setText(nombre);

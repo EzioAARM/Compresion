@@ -104,10 +104,21 @@ public class huffmanCoding {
         if ( temp == null){
             return;
         }
-        traverse(temp.left);
-        codeWord = codeWord + "0";
-        traverse(temp.right);
-        codeWord = codeWord + "1";
+        traverse(temp.left, "0", "");
+        traverse(temp.right, "1", "");
+
+    }
+
+    public void traverse(node arbol, String code, String codeWordParam){
+        node temp = arbol;
+        if ( temp == null){
+            return;
+        }
+        traverse(temp.left, "0", codeWordParam + code);
+        if (temp.esHoja()){
+            temp.codeWord = codeWordParam;
+        }
+        traverse(temp.right, "1", codeWordParam + code);
 
     }
 

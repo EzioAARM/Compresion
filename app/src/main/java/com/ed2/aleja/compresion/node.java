@@ -12,4 +12,11 @@ public class node {
     public char aChar;
     public node left;
     public node right;
+
+    public boolean esHoja(){
+        if (left == null && right == null){
+            return  true;
+        }
+        return false;
+    }
 }

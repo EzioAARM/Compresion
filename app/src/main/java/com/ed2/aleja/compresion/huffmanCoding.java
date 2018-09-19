@@ -50,8 +50,9 @@ public class huffmanCoding {
                 simbolosO.put(times, simbolos.get(i));
                 node nodoActual = new node(times, simbolos.get(i));
                 listaNodos.add(nodoActual);
+                times = 0;
+                lector.close();
             }
-            lector.close();
             build();
         }
         catch (Exception e){
@@ -112,6 +113,7 @@ public class huffmanCoding {
             BufferedReader lector = new BufferedReader(new InputStreamReader(inputStream));
             int ch = lector.read();
             char caracter = (char)ch;
+            simbolos.add(caracter);
             while (ch != -1)
             {
                 for (int i = 0; i < simbolos.size(); i++){

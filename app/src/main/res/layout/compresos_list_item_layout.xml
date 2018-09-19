@@ -4,20 +4,49 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/img_tipo_compresion"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_centerInParent="true"
-        android:src="@drawable/ic_huffman_light"/>
+        android:orientation="horizontal"
+        android:layout_margin="10dp">
+        <ImageView
+            android:id="@+id/img_tipo_compresion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_huffman_light"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/nombre_archivo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nombre del archivo"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <TextView
-        android:id="@+id/nombre_archivo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:text="Large Text"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/ratio_compresion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="Ratio"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+                <TextView
+                    android:id="@+id/factor_compresion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="30dp"
+                    android:text="Factor"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+
 </LinearLayout>

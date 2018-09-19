@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,8 +50,13 @@ public class ComprimirFragment extends Fragment {
         comprimir.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                compresor = new huffmanCoding(uri, rootView.getContext());
-
+                EditText nombreArchivoCompreso = (EditText) rootView.findViewById(R.id.nombre_archivo_compreso);
+                if (nombreArchivoCompreso.getText().length() != 0){
+                    compresor = new huffmanCoding(uri, rootView.getContext());
+                } else {
+                    CharSequence textoError = "Debe ingresar un nombre para el archivo";
+                    Toast.makeText(getActivity(), textoError, Toast.LENGTH_LONG).show();
+                }
             }
         });
         return rootView;
@@ -61,7 +67,7 @@ public class ComprimirFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_CANCELED) {
             texto = "No se selecciono ningún archivo";
-            Toast.makeText(this.getContext(), texto, Toast.LENGTH_SHORT);
+            Toast.makeText(getActivity(), texto, Toast.LENGTH_SHORT).show();
         } else if ((resultCode == RESULT_OK) && (requestCode == valorRetornado )) {
             uri = data.getData();
             File archivo = new File(uri.toString());

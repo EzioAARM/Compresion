@@ -33,6 +33,7 @@ public class huffmanCoding {
     public Map<Character, String> tabla = new TreeMap<>();
     public ArrayList<Character> simbolos = new ArrayList<Character>();
     public ArrayList<node> hojas = new ArrayList<>();
+    private String NombreOriginalArchivo = "";
     public int times;
     public int decodeCount = 0;
     public int pointer = 0;
@@ -44,10 +45,10 @@ public class huffmanCoding {
     public String codeWord;
     public Uri miUri;
     private Context Contexto = null;
+    public String ubicacionArchivo = "";
 
     public huffmanCoding(Uri uri, Context contextoApp){
         Contexto = contextoApp;
-        getSimbolos(uri);
     }
 
     public void getFrecuencias (Uri uri){
@@ -252,6 +253,7 @@ public class huffmanCoding {
                 caracter = (char)ch;
             }
             res = new String(chars);
+            escribirArchivoCompreso(NombreOriginalArchivo, getNombreOriginal() + getTablaCaracteres() + res);
         }
         catch (Exception e){
             Log.println(Log.DEBUG,"",e.toString());
@@ -294,15 +296,31 @@ public class huffmanCoding {
         }
     }
 
+    public void setNombreOriginal(String nombre) {
+        NombreOriginalArchivo = nombre;
+    }
+
+    public String getNombreOriginal() {
+        return NombreOriginalArchivo + "☺☺";
+    }
+
+    private String getTablaCaracteres() {
+        String datos = "";
+        for (int i = 0; i < hojas.size(); i++) {
+            datos += hojas.get(i).aChar + (char) (hojas.get(i).prob);
+        }
+        datos += "☺☺";
+        return  datos;
+    }
+
 
     public boolean escribirArchivoCompreso(String nombreArchivo, String contenido) throws Exception {
         File directorio = null;
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
             directorio = new File(Environment.getExternalStorageDirectory() + "/CompresionesEstructuras/");
-        } else {
+        else
             directorio = new File(Contexto.getFilesDir() + "/CompresionesEstructuras/");
-        }
-        boolean dirCre = false;
+        boolean dirCre = true;
         if (!directorio.exists())
             dirCre = directorio.mkdirs();
         if (!dirCre) {
@@ -311,19 +329,16 @@ public class huffmanCoding {
         File archivoEscribir = new File(directorio.getAbsolutePath() + "/" + nombreArchivo + ".huff");
         if (!archivoEscribir.createNewFile())
             throw new Exception("No se pudo crear el archivo " + directorio.getAbsolutePath());
-        FileOutputStream fileOutputStream = new FileOutputStream(directorio);
+        FileOutputStream fileOutputStream = new FileOutputStream(archivoEscribir);
         fileOutputStream.write(contenido.getBytes());
         fileOutputStream.close();
+        ubicacionArchivo = archivoEscribir.getAbsolutePath();
         return true;
     }
 
     public void escribirArchivo(String nombreArchivo, String extension, String contenido) throws Exception {
         File directorio = null;
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            directorio = new File(Environment.getExternalStorageDirectory() + "/DescompresionEstructuras/");
-        } else {
-            directorio = new File(Contexto.getFilesDir() + "/DescompresionEstructuras/");
-        }
+        directorio = new File(Contexto.getFilesDir() + "/DescompresionEstructuras/");
         boolean dirCre = false;
         if (!directorio.exists())
             dirCre = directorio.mkdirs();

@@ -138,7 +138,16 @@ public class huffmanCoding {
             tabla.put(temp.aChar, temp.codeWord);
         }
         traverse(temp.right, "1", codeWordParam + code);
+    }
 
+    public boolean buscarCodeWord(String code) {
+        for (int i = 0; i < hojas.size(); i++) {
+            if (hojas.get(i).codeWord == code){
+                outPut += String.valueOf(hojas.get(i).aChar);
+                return true;
+            }
+        }
+        return false;
     }
 
     public void decode(){
@@ -250,7 +259,7 @@ public class huffmanCoding {
                 caracter = (char)ch;
             }
             res = new String(chars);
-            decode();
+            //decode();
         }
         catch (Exception e){
             Log.println(Log.DEBUG,"",e.toString());

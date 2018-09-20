@@ -53,10 +53,24 @@ public class ComprimirFragment extends Fragment {
                 EditText nombreArchivoCompreso = (EditText) rootView.findViewById(R.id.nombre_archivo_compreso);
                 if (nombreArchivoCompreso.getText().length() != 0){
                     compresor = new huffmanCoding(uri, rootView.getContext());
+                    CharSequence res = compresor.res;
+                    TextView mostrarCompresion = (TextView) rootView.findViewById(R.id.mostrar_compreso);
+                    mostrarCompresion.setText(res);
                 } else {
                     CharSequence textoError = "Debe ingresar un nombre para el archivo";
                     Toast.makeText(getActivity(), textoError, Toast.LENGTH_LONG).show();
                 }
+            }
+        });
+        Button descomprimir = (Button) rootView.findViewById(R.id.descomprimir_archivo);
+        descomprimir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                compresor.decode();
+                TextView mostrarCompresion = (TextView) rootView.findViewById(R.id.mostrar_compreso);
+                CharSequence res = compresor.outPut;
+                mostrarCompresion.setText(res);
+
             }
         });
         return rootView;

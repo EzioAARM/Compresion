@@ -87,7 +87,7 @@ public class huffmanCoding {
         {
             for (j = 0; j < listaNodos.size()-i-1; j++)
             {
-                if (listaNodos.get(j).prob > listaNodos.get(j+1).prob)
+                if (listaNodos.get(j).prob >= listaNodos.get(j+1).prob)
                 {
                     temp = listaNodos.get(j);
                     listaNodos.remove(j);
@@ -141,18 +141,16 @@ public class huffmanCoding {
     }
 
     public boolean buscarCodeWord(String code) {
+        String codeWordComparar = "";
         for (int i = 0; i < hojas.size(); i++) {
-            if (hojas.get(i).codeWord == code){
+            codeWordComparar = hojas.get(i).codeWord;
+            if (codeWordComparar.equals(code)){
                 outPut += String.valueOf(hojas.get(i).aChar);
                 return true;
             }
         }
         return false;
     }
-
-    //private boolean comparar(String codewordComp){
-
-    //}
 
     public void decode(){
         String decode = "";
@@ -162,45 +160,28 @@ public class huffmanCoding {
             int size = res.length();
             char caracter = (char)ch;
             String cadenaF = "";
+            String aux = "";
             while (f < res.length()-1) {
-
-                decode = decode + Integer.toString(ch,2);
-                for(int t = 0; t < (8-decode.length());t++){
+                aux = Integer.toString(ch,2);
+                for(int t = 0; t < (8-aux.length());t++){
                     cadenaF += "0";
                 }
-                decode = cadenaF+decode;
+                decode = decode + cadenaF + aux;
                 cadenaF = "";
                 f++;
                 ch = (int)res.charAt(f);
                 caracter = (char)ch;
 
             }
-            char[]  caracteres = decode.toCharArray();
-            decode = "";
-            int temp = 0;
-            while (decodeCount < caracteres.length) {
-                for (int i = 0; i < hojas.size(); i++) {
-                    for (int j = temp; j < temp + hojas.get(i).codeWord.length(); j++) {
-                        decode = decode + caracteres[j];
-
-
-
-                        decodeCount++;
-                    }
-                    temp = decodeCount;
-                    if (decode.equals(hojas.get(i).codeWord.trim())) {
-                        outPut = outPut + hojas.get(i).aChar;
-                    }
-                    else {
-                        decodeCount = 0;
-                        temp = decodeCount;
-                    }
-                    decode = "";
+            String cadenaComparar = "";
+            for (int i = 0; i < decode.length(); i++) {
+                cadenaComparar += decode.charAt(i);
+                if (buscarCodeWord(cadenaComparar)) {
+                    cadenaComparar = "";
                 }
             }
-         String cadena69 = "";
+            String cadena123123 = "";
         }
-
         catch (Exception e){
             Log.println(Log.DEBUG, "", e.toString());
         }

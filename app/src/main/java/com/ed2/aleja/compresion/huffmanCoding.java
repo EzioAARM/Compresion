@@ -2,16 +2,23 @@ package com.ed2.aleja.compresion;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Environment;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.Console;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -282,4 +289,38 @@ public class huffmanCoding {
 
     }
 
+
+    public void escribirArchivoCompreso(String nombreArchivo, String contenido) throws Exception {
+        File directorio = null;
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            directorio = new File(Environment.getExternalStorageDirectory() + "/" + nombreArchivo + ".huff");
+        } else {
+            directorio = new File(Contexto.getFilesDir() + "/" + nombreArchivo + ".huff");
+        }
+        directorio = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/" + nombreArchivo + ".huff");
+        boolean dirCre = directorio.mkdirs();
+        if (!dirCre) {
+            throw new Exception("No se pudo crear la ruta " + directorio.getAbsolutePath());
+        }
+        FileOutputStream fileOutputStream = new FileOutputStream(directorio);
+        fileOutputStream.write(contenido.getBytes());
+        fileOutputStream.close();
+    }
+
+    public void escribirArchivo(String nombreArchivo, String extension, String contenido) throws Exception {
+        File directorio = null;
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            directorio = new File(Environment.getExternalStorageDirectory() + "/DescompresionEstructuras/" + nombreArchivo + ".huff");
+        } else {
+            directorio = new File(Contexto.getFilesDir() + "/DescompresionEstructuras/" + nombreArchivo + "." + extension);
+        }
+        directorio = new File(Environment.getExternalStorageDirectory() + "/DescompresionEstructuras/" + nombreArchivo + ".huff");
+        boolean dirCre = directorio.createNewFile();
+        if (!dirCre) {
+            throw new Exception("No se pudo crear la ruta " + directorio.getAbsolutePath());
+        }
+        FileOutputStream fileOutputStream = new FileOutputStream(directorio);
+        fileOutputStream.write(contenido.getBytes());
+        fileOutputStream.close();
+    }
 }

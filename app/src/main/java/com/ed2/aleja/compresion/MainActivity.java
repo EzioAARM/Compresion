@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        //asdf
         toolbar = findViewById(R.id.toolbar_navigation);
         toolbar.setTitle(R.string.my_comp);
         setSupportActionBar(toolbar);

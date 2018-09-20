@@ -149,7 +149,7 @@ public class huffmanCoding {
             int size = res.length();
             char caracter = (char)ch;
             while (f < res.length()-1) {
-                decode = decode + Integer.toBinaryString(ch);
+                decode = decode + Integer.toString(ch,2);
                 f++;
                 ch = (int)res.charAt(f);
                 caracter = (char)ch;
@@ -193,6 +193,7 @@ public class huffmanCoding {
             int ch = lector.read();
             char caracter = (char)ch;
             while (ch != -1) {
+                ch = ch >> 1;
                 decode = decode + Integer.toBinaryString(ch);
                 ch = lector.read();
                 caracter = (char)ch;
@@ -228,6 +229,7 @@ public class huffmanCoding {
             BufferedReader lector = new BufferedReader(new InputStreamReader(inputStream));
             int ch = lector.read();
             char caracter = (char)ch;
+            String codigo = "";
             int c = 0;
             char[] chars = new char[flag];
             while (ch != -1){
@@ -235,15 +237,15 @@ public class huffmanCoding {
                 temp = code.toCharArray();
                 for(int i = 0; i < temp.length; i++) {
                     if(pointer == 8){
-                        chars[indice] = (char)c;
-                        c = 0;
+                        chars[indice] = (char)Integer.parseInt(codigo, 2);
+                        codigo = "";
                         indice++;
                         pointer = 0;
                     }
-                    c = c << 1;
-                    c += temp[i];
+                    codigo = codigo + temp[i];
                     pointer++;
                 }
+
                 ch = lector.read();
                 caracter = (char)ch;
             }

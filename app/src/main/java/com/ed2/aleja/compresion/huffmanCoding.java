@@ -23,10 +23,15 @@ import java.util.TreeMap;
 public class huffmanCoding {
     public ArrayList<node> listaNodos = new ArrayList<>();
     public Map<Integer, Character> simbolosO = new TreeMap<Integer, Character>();
+    public Map<Character, String> tabla = new TreeMap<>();
     public ArrayList<Character> simbolos = new ArrayList<Character>();
     public ArrayList<node> hojas = new ArrayList<>();
     public int times;
+    public int pointer = 0;
     public int flag = 1;
+    public int indice = 0;
+    public ArrayList<Integer> bitArray = new ArrayList<>();
+    public String res;
     public String codeWord;
     public Uri miUri;
     private Context Contexto = null;
@@ -109,7 +114,7 @@ public class huffmanCoding {
         }
         traverse(temp.left, "0", "");
         traverse(temp.right, "1", "");
-
+        escribir();
     }
 
     public void traverse(node arbol, String code, String codeWordParam){
@@ -121,12 +126,49 @@ public class huffmanCoding {
         if (temp.esHoja()){
             temp.codeWord = codeWordParam + code;
             hojas.add(temp);
+            tabla.put(temp.aChar, temp.codeWord);
         }
         traverse(temp.right, "1", codeWordParam + code);
 
     }
 
+    public void escribir(){
+        String code = "";
+        char[] temp;
+        try {
+            InputStream inputStream = Contexto.getContentResolver().openInputStream(miUri);
+            BufferedReader lector = new BufferedReader(new InputStreamReader(inputStream));
+            int ch = lector.read();
+            char caracter = (char)ch;
+            int c = 0;
+            char[] chars = new char[(pointer / 8)+1];
+            while (ch != -1){
+                code = tabla.get(caracter);
+                temp = code.toCharArray();
+                for(int i = 0; i < temp.length; i++) {
+                    if(pointer == 8){
+                        chars[indice] = (char)c;
+                        c = 0;
+                        indice++;
+                        pointer = 0;
+                    }
+                    c = c << 1;
+                    c += temp[i];
+                    pointer++;
+                }
+                ch = lector.read();
+                caracter = (char)ch;
+            }
+            res = new String(chars);
+        }
+        catch (Exception e){
+            Log.println(Log.DEBUG,"",e.toString());
+        }
+
+    }
+
     public void getSimbolos(Uri uri){
+        miUri = uri;
         try {
             InputStream inputStream = Contexto.getContentResolver().openInputStream(uri);
             BufferedReader lector = new BufferedReader(new InputStreamReader(inputStream));

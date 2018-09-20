@@ -252,7 +252,6 @@ public class huffmanCoding {
                 caracter = (char)ch;
             }
             res = new String(chars);
-            //decode();
         }
         catch (Exception e){
             Log.println(Log.DEBUG,"",e.toString());
@@ -293,39 +292,47 @@ public class huffmanCoding {
         {
             Log.println(Log.DEBUG," ", e.toString());
         }
-
     }
 
 
-    public void escribirArchivoCompreso(String nombreArchivo, String contenido) throws Exception {
+    public boolean escribirArchivoCompreso(String nombreArchivo, String contenido) throws Exception {
         File directorio = null;
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            directorio = new File(Environment.getExternalStorageDirectory() + "/" + nombreArchivo + ".huff");
+            directorio = new File(Environment.getExternalStorageDirectory() + "/CompresionesEstructuras/");
         } else {
-            directorio = new File(Contexto.getFilesDir() + "/" + nombreArchivo + ".huff");
+            directorio = new File(Contexto.getFilesDir() + "/CompresionesEstructuras/");
         }
-        directorio = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/" + nombreArchivo + ".huff");
-        boolean dirCre = directorio.mkdirs();
+        boolean dirCre = false;
+        if (!directorio.exists())
+            dirCre = directorio.mkdirs();
         if (!dirCre) {
             throw new Exception("No se pudo crear la ruta " + directorio.getAbsolutePath());
         }
+        File archivoEscribir = new File(directorio.getAbsolutePath() + "/" + nombreArchivo + ".huff");
+        if (!archivoEscribir.createNewFile())
+            throw new Exception("No se pudo crear el archivo " + directorio.getAbsolutePath());
         FileOutputStream fileOutputStream = new FileOutputStream(directorio);
         fileOutputStream.write(contenido.getBytes());
         fileOutputStream.close();
+        return true;
     }
 
     public void escribirArchivo(String nombreArchivo, String extension, String contenido) throws Exception {
         File directorio = null;
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            directorio = new File(Environment.getExternalStorageDirectory() + "/DescompresionEstructuras/" + nombreArchivo + ".huff");
+            directorio = new File(Environment.getExternalStorageDirectory() + "/DescompresionEstructuras/");
         } else {
-            directorio = new File(Contexto.getFilesDir() + "/DescompresionEstructuras/" + nombreArchivo + "." + extension);
+            directorio = new File(Contexto.getFilesDir() + "/DescompresionEstructuras/");
         }
-        directorio = new File(Environment.getExternalStorageDirectory() + "/DescompresionEstructuras/" + nombreArchivo + ".huff");
-        boolean dirCre = directorio.createNewFile();
+        boolean dirCre = false;
+        if (!directorio.exists())
+            dirCre = directorio.mkdirs();
         if (!dirCre) {
             throw new Exception("No se pudo crear la ruta " + directorio.getAbsolutePath());
         }
+        File archivoEscribir = new File(directorio.getAbsolutePath() + nombreArchivo + extension);
+        if (!archivoEscribir.createNewFile())
+            throw new Exception("No se pudo crear el archivo " + archivoEscribir.getAbsolutePath());
         FileOutputStream fileOutputStream = new FileOutputStream(directorio);
         fileOutputStream.write(contenido.getBytes());
         fileOutputStream.close();

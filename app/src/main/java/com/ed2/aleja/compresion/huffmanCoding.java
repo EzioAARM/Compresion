@@ -33,7 +33,7 @@ public class huffmanCoding {
     public Map<Character, String> tabla = new TreeMap<>();
     public ArrayList<Character> simbolos = new ArrayList<Character>();
     public ArrayList<node> hojas = new ArrayList<>();
-    private String NombreOriginalArchivo = "";
+    public String NombreOriginalArchivo = "";
     public int times;
     public int decodeCount = 0;
     public int pointer = 0;

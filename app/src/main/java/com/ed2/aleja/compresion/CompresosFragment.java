@@ -9,11 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class CompresosFragment extends Fragment {
@@ -25,26 +27,25 @@ public class CompresosFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.compresos_fragment, container, false);
         try {
-            InputStream archivoComrpesos = getResources().openRawResource(R.raw.compresos);
-            BufferedReader lector = new BufferedReader(new InputStreamReader(archivoComrpesos));
-            String linea;
             String[] contenido = null;
             boolean esHuff = true;
             ArrayList<ListViewItem> listadoItems = new ArrayList<>();
-            while ((linea = lector.readLine()) != null) {
-                contenido = linea.split("\\\\");
+            int i = 0;
+            ArrayList<String> listadoEnFragment = ListadoCompresos.getInstancia().compresos;
+            while (i < listadoEnFragment.size()) {
+                contenido = ListadoCompresos.getInstancia().compresos.get(i).split("\\\\");
                 if (contenido[0].equals("1"))
                     esHuff = true;
                 else
                     esHuff = false;
                 listadoItems.add(new ListViewItem(esHuff, contenido[1], Double.parseDouble(contenido[2]), Double.parseDouble(contenido[3])));
+                i++;
             }
-            archivoComrpesos.close();
             AdaptadorListViewItem adaptadorListViewItem = new AdaptadorListViewItem(listadoItems, rootView.getContext());
             ListView listViewCompresos = (ListView) rootView.findViewById(R.id.listview_compresos);
             listViewCompresos.setAdapter(adaptadorListViewItem);
-        } catch (IOException ex) {
-            Log.e("Listado de compresos", ex.getMessage());
+        } catch (Exception ex) {
+            Toast.makeText(rootView.getContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
         }
         return rootView;
     }

@@ -64,9 +64,10 @@ public class ComprimirFragment extends Fragment {
                         EditText nombreArchivoGuardar = (EditText) rootView.findViewById(R.id.nombre_archivo_compreso);
                         compresor.setNombreOriginal(nombreArchivoGuardar.getText().toString());
                         compresor.getSimbolos(uri);
-                        OutputStreamWriter escritor = new OutputStreamWriter(rootView.getContext().openFileOutput("compresos.compresos", Context.MODE_APPEND));
+                        ListadoCompresos.getInstancia().compresos.add("1\\" + compresor.NombreOriginalArchivo + "\\0.015\\0.25\\" + compresor.ubicacionArchivo);
+                        /*OutputStreamWriter escritor = new OutputStreamWriter(rootView.getContext().openFileOutput("compresos.txt", Context.MODE_PRIVATE));
                         escritor.write("true\\\\" + compresor.getNombreOriginal() + "\\\\ratio\\\\factor\\\\" + compresor.ubicacionArchivo + "\n");
-                        escritor.close();
+                        escritor.close();*/
                         Toast.makeText(getActivity(), "Se realizó la compresión del archivo", Toast.LENGTH_SHORT).show();
                     } catch (Exception e) {
                         Toast.makeText(rootView.getContext(), "Hubo un error escribiendo el archivo", Toast.LENGTH_LONG).show();

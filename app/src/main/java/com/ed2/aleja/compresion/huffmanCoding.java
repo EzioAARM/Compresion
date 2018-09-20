@@ -141,6 +141,10 @@ public class huffmanCoding {
 
     }
 
+    //private boolean comparar(String codewordComp){
+
+    //}
+
     public void decode(){
         String decode = "";
         int f = 0;
@@ -148,8 +152,15 @@ public class huffmanCoding {
             int ch = (int)res.charAt(0);
             int size = res.length();
             char caracter = (char)ch;
+            String cadenaF = "";
             while (f < res.length()-1) {
+
                 decode = decode + Integer.toString(ch,2);
+                for(int t = 0; t < (8-decode.length());t++){
+                    cadenaF += "0";
+                }
+                decode = cadenaF+decode;
+                cadenaF = "";
                 f++;
                 ch = (int)res.charAt(f);
                 caracter = (char)ch;
@@ -178,8 +189,9 @@ public class huffmanCoding {
                     decode = "";
                 }
             }
-
+         String cadena69 = "";
         }
+
         catch (Exception e){
             Log.println(Log.DEBUG, "", e.toString());
         }

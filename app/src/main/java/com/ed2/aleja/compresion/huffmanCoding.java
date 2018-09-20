@@ -27,9 +27,11 @@ public class huffmanCoding {
     public ArrayList<Character> simbolos = new ArrayList<Character>();
     public ArrayList<node> hojas = new ArrayList<>();
     public int times;
+    public int decodeCount = 0;
     public int pointer = 0;
     public int flag = 1;
     public int indice = 0;
+    public String outPut = "";
     public ArrayList<Integer> bitArray = new ArrayList<>();
     public String res;
     public String codeWord;
@@ -132,6 +134,82 @@ public class huffmanCoding {
 
     }
 
+    public void decode(){
+        String decode = "";
+        int f = 0;
+        try {
+            int ch = (int)res.charAt(0);
+            int size = res.length();
+            char caracter = (char)ch;
+            while (f < res.length()-1) {
+                decode = decode + Integer.toBinaryString(ch);
+                f++;
+                ch = (int)res.charAt(f);
+                caracter = (char)ch;
+
+            }
+            char[]  caracteres = decode.toCharArray();
+            decode = "";
+            int temp = 0;
+            while (decodeCount < caracteres.length) {
+                for (int i = 0; i < hojas.size(); i++) {
+                    for (int j = temp; j < temp + hojas.get(i).codeWord.length(); j++) {
+                        decode = decode + caracteres[j];
+                        decodeCount++;
+                    }
+                    temp = decodeCount;
+                    if (decode.equals(hojas.get(i).codeWord.trim())) {
+                        outPut = outPut + hojas.get(i).aChar;
+                    }
+                    else {
+                        decodeCount = 0;
+                        temp = decodeCount;
+                    }
+                    decode = "";
+                }
+            }
+
+        }
+        catch (Exception e){
+            Log.println(Log.DEBUG, "", e.toString());
+        }
+    }
+
+    public void decode(Uri uri){
+        String decode = "";
+        try {
+            InputStream inputStream = Contexto.getContentResolver().openInputStream(uri);
+            BufferedReader lector = new BufferedReader(new InputStreamReader(inputStream));
+            int ch = lector.read();
+            char caracter = (char)ch;
+            while (ch != -1) {
+                decode = decode + Integer.toBinaryString(ch);
+                ch = lector.read();
+                caracter = (char)ch;
+            }
+            char[]  caracteres = decode.toCharArray();
+            decode = "";
+            while (decodeCount != caracteres.length) {
+                for (int i = 0; i < hojas.size(); i++) {
+                    for (int j = decodeCount; j < decodeCount + hojas.get(i).codeWord.length(); j++) {
+                        decode = decode + caracteres[j];
+                        decodeCount++;
+                    }
+                    if (decode == hojas.get(i).codeWord) {
+                        outPut = outPut + hojas.get(i).aChar;
+                    }
+                    else {
+                        decodeCount = 0;
+                    }
+                    decode = "";
+                }
+            }
+        }
+        catch (Exception e){
+
+        }
+    }
+
     public void escribir(){
         String code = "";
         char[] temp;
@@ -141,7 +219,7 @@ public class huffmanCoding {
             int ch = lector.read();
             char caracter = (char)ch;
             int c = 0;
-            char[] chars = new char[(pointer / 8)+1];
+            char[] chars = new char[flag];
             while (ch != -1){
                 code = tabla.get(caracter);
                 temp = code.toCharArray();
@@ -160,6 +238,7 @@ public class huffmanCoding {
                 caracter = (char)ch;
             }
             res = new String(chars);
+            decode();
         }
         catch (Exception e){
             Log.println(Log.DEBUG,"",e.toString());

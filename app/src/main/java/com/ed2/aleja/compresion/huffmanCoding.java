@@ -42,6 +42,9 @@ public class huffmanCoding {
     public String outPut = "";
     public ArrayList<Integer> bitArray = new ArrayList<>();
     public String res;
+    public double operando;
+    public double ratio2;
+    public double factor;
     public String codeWord;
     public Uri miUri;
     private Context Contexto = null;
@@ -52,7 +55,7 @@ public class huffmanCoding {
     }
 
     public void getFrecuencias (Uri uri){
-
+        operando = res.length();
         try {
             char actual;
             for (int i = 0; i < simbolos.size(); i++){
@@ -182,6 +185,9 @@ public class huffmanCoding {
                 }
             }
             String cadena123123 = "";
+            ratio2 = operando / outPut.length();
+            factor = 1/ratio2;
+            ratio2 = ratio2* 100;
         }
         catch (Exception e){
             Log.println(Log.DEBUG, "", e.toString());

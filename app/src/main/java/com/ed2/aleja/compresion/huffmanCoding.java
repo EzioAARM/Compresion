@@ -162,9 +162,6 @@ public class huffmanCoding {
                 for (int i = 0; i < hojas.size(); i++) {
                     for (int j = temp; j < temp + hojas.get(i).codeWord.length(); j++) {
                         decode = decode + caracteres[j];
-
-
-
                         decodeCount++;
                     }
                     temp = decodeCount;

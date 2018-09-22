@@ -33,6 +33,7 @@ public class huffmanCoding {
     public Map<Character, String> tabla = new TreeMap<>();
     public ArrayList<Character> simbolos = new ArrayList<Character>();
     public ArrayList<node> hojas = new ArrayList<>();
+    public String NombreOriginalArchivo = "";
     public int times;
     public int decodeCount = 0;
     public int pointer = 0;
@@ -44,10 +45,10 @@ public class huffmanCoding {
     public String codeWord;
     public Uri miUri;
     private Context Contexto = null;
+    public String ubicacionArchivo = "";
 
     public huffmanCoding(Uri uri, Context contextoApp){
         Contexto = contextoApp;
-        getSimbolos(uri);
     }
 
     public void getFrecuencias (Uri uri){
@@ -87,7 +88,7 @@ public class huffmanCoding {
         {
             for (j = 0; j < listaNodos.size()-i-1; j++)
             {
-                if (listaNodos.get(j).prob > listaNodos.get(j+1).prob)
+                if (listaNodos.get(j).prob >= listaNodos.get(j+1).prob)
                 {
                     temp = listaNodos.get(j);
                     listaNodos.remove(j);
@@ -138,7 +139,18 @@ public class huffmanCoding {
             tabla.put(temp.aChar, temp.codeWord);
         }
         traverse(temp.right, "1", codeWordParam + code);
+    }
 
+    public boolean buscarCodeWord(String code) {
+        String codeWordComparar = "";
+        for (int i = 0; i < hojas.size(); i++) {
+            codeWordComparar = hojas.get(i).codeWord;
+            if (codeWordComparar.equals(code)){
+                outPut += String.valueOf(hojas.get(i).aChar);
+                return true;
+            }
+        }
+        return false;
     }
 
     public void decode(){
@@ -148,13 +160,21 @@ public class huffmanCoding {
             int ch = (int)res.charAt(0);
             int size = res.length();
             char caracter = (char)ch;
+            String cadenaF = "";
+            String aux = "";
             while (f < res.length()-1) {
-                decode = decode + Integer.toBinaryString(ch);
+                aux = Integer.toString(ch,2);
+                for(int t = 0; t < (8-aux.length());t++){
+                    cadenaF += "0";
+                }
+                decode = decode + cadenaF + aux;
+                cadenaF = "";
                 f++;
                 ch = (int)res.charAt(f);
                 caracter = (char)ch;
 
             }
+<<<<<<< HEAD
             char[]  caracteres = decode.toCharArray();
             decode = "";
             int temp = 0;
@@ -173,9 +193,16 @@ public class huffmanCoding {
                         temp = decodeCount;
                     }
                     decode = "";
+=======
+            String cadenaComparar = "";
+            for (int i = 0; i < decode.length(); i++) {
+                cadenaComparar += decode.charAt(i);
+                if (buscarCodeWord(cadenaComparar)) {
+                    cadenaComparar = "";
+>>>>>>> master
                 }
             }
-
+            String cadena123123 = "";
         }
         catch (Exception e){
             Log.println(Log.DEBUG, "", e.toString());
@@ -190,6 +217,7 @@ public class huffmanCoding {
             int ch = lector.read();
             char caracter = (char)ch;
             while (ch != -1) {
+                ch = ch >> 1;
                 decode = decode + Integer.toBinaryString(ch);
                 ch = lector.read();
                 caracter = (char)ch;
@@ -225,6 +253,7 @@ public class huffmanCoding {
             BufferedReader lector = new BufferedReader(new InputStreamReader(inputStream));
             int ch = lector.read();
             char caracter = (char)ch;
+            String codigo = "";
             int c = 0;
             char[] chars = new char[flag];
             while (ch != -1){
@@ -232,20 +261,20 @@ public class huffmanCoding {
                 temp = code.toCharArray();
                 for(int i = 0; i < temp.length; i++) {
                     if(pointer == 8){
-                        chars[indice] = (char)c;
-                        c = 0;
+                        chars[indice] = (char)Integer.parseInt(codigo, 2);
+                        codigo = "";
                         indice++;
                         pointer = 0;
                     }
-                    c = c << 1;
-                    c += temp[i];
+                    codigo = codigo + temp[i];
                     pointer++;
                 }
+
                 ch = lector.read();
                 caracter = (char)ch;
             }
             res = new String(chars);
-            decode();
+            escribirArchivoCompreso(NombreOriginalArchivo, getNombreOriginal() + getTablaCaracteres() + res);
         }
         catch (Exception e){
             Log.println(Log.DEBUG,"",e.toString());
@@ -286,39 +315,60 @@ public class huffmanCoding {
         {
             Log.println(Log.DEBUG," ", e.toString());
         }
+    }
 
+    public void setNombreOriginal(String nombre) {
+        NombreOriginalArchivo = nombre;
+    }
+
+    public String getNombreOriginal() {
+        return NombreOriginalArchivo + "☺☺";
+    }
+
+    private String getTablaCaracteres() {
+        String datos = "";
+        for (int i = 0; i < hojas.size(); i++) {
+            datos += hojas.get(i).aChar + (char) (hojas.get(i).prob);
+        }
+        datos += "☺☺";
+        return  datos;
     }
 
 
-    public void escribirArchivoCompreso(String nombreArchivo, String contenido) throws Exception {
+    public boolean escribirArchivoCompreso(String nombreArchivo, String contenido) throws Exception {
         File directorio = null;
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            directorio = new File(Environment.getExternalStorageDirectory() + "/" + nombreArchivo + ".huff");
-        } else {
-            directorio = new File(Contexto.getFilesDir() + "/" + nombreArchivo + ".huff");
-        }
-        directorio = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/" + nombreArchivo + ".huff");
-        boolean dirCre = directorio.mkdirs();
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
+            directorio = new File(Environment.getExternalStorageDirectory() + "/CompresionesEstructuras/");
+        else
+            directorio = new File(Contexto.getFilesDir() + "/CompresionesEstructuras/");
+        boolean dirCre = true;
+        if (!directorio.exists())
+            dirCre = directorio.mkdirs();
         if (!dirCre) {
             throw new Exception("No se pudo crear la ruta " + directorio.getAbsolutePath());
         }
-        FileOutputStream fileOutputStream = new FileOutputStream(directorio);
+        File archivoEscribir = new File(directorio.getAbsolutePath() + "/" + nombreArchivo + ".huff");
+        if (!archivoEscribir.createNewFile())
+            throw new Exception("No se pudo crear el archivo " + directorio.getAbsolutePath());
+        FileOutputStream fileOutputStream = new FileOutputStream(archivoEscribir);
         fileOutputStream.write(contenido.getBytes());
         fileOutputStream.close();
+        ubicacionArchivo = archivoEscribir.getAbsolutePath();
+        return true;
     }
 
     public void escribirArchivo(String nombreArchivo, String extension, String contenido) throws Exception {
         File directorio = null;
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            directorio = new File(Environment.getExternalStorageDirectory() + "/DescompresionEstructuras/" + nombreArchivo + ".huff");
-        } else {
-            directorio = new File(Contexto.getFilesDir() + "/DescompresionEstructuras/" + nombreArchivo + "." + extension);
-        }
-        directorio = new File(Environment.getExternalStorageDirectory() + "/DescompresionEstructuras/" + nombreArchivo + ".huff");
-        boolean dirCre = directorio.createNewFile();
+        directorio = new File(Contexto.getFilesDir() + "/DescompresionEstructuras/");
+        boolean dirCre = false;
+        if (!directorio.exists())
+            dirCre = directorio.mkdirs();
         if (!dirCre) {
             throw new Exception("No se pudo crear la ruta " + directorio.getAbsolutePath());
         }
+        File archivoEscribir = new File(directorio.getAbsolutePath() + nombreArchivo + extension);
+        if (!archivoEscribir.createNewFile())
+            throw new Exception("No se pudo crear el archivo " + archivoEscribir.getAbsolutePath());
         FileOutputStream fileOutputStream = new FileOutputStream(directorio);
         fileOutputStream.write(contenido.getBytes());
         fileOutputStream.close();

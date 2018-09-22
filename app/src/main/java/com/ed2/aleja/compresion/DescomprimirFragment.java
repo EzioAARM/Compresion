@@ -21,19 +21,6 @@ public class DescomprimirFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.descomprimir_fragment, container, false);
-        Button botonPrueba = (Button) rootView.findViewById(R.id.boton_test);
-        botonPrueba.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Uri myUri = Uri.parse("http://www.google.com");
-                huffmanCoding huff = new huffmanCoding(myUri, rootView.getContext());
-                try {
-                    huff.escribirArchivoCompreso("archivoPruebaEx", "HolaHolaHola");
-                } catch (Exception e) {
-                    Toast.makeText(rootView.getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            }
-        });
         return rootView;
     }
 }

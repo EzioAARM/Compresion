@@ -1,5 +1,6 @@
 package com.ed2.aleja.compresion;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -16,8 +17,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.nio.Buffer;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -46,13 +53,25 @@ public class ComprimirFragment extends Fragment {
                 startActivityForResult(Intent.createChooser(intent, "Seleccionar archivo"), valorRetornado);
             }
         });
-        Button comprimir = (Button) rootView.findViewById(R.id.comprimir_archivo);
+        final Button comprimir = (Button) rootView.findViewById(R.id.comprimir_archivo);
         comprimir.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 EditText nombreArchivoCompreso = (EditText) rootView.findViewById(R.id.nombre_archivo_compreso);
                 if (nombreArchivoCompreso.getText().length() != 0){
-                    compresor = new huffmanCoding(uri, rootView.getContext());
+                    try {
+                        compresor = new huffmanCoding(uri, rootView.getContext());
+                        EditText nombreArchivoGuardar = (EditText) rootView.findViewById(R.id.nombre_archivo_compreso);
+                        compresor.setNombreOriginal(nombreArchivoGuardar.getText().toString());
+                        compresor.getSimbolos(uri);
+                        ListadoCompresos.getInstancia().compresos.add("1\\" + compresor.NombreOriginalArchivo + "\\0.015\\0.25\\" + compresor.ubicacionArchivo);
+                        /*OutputStreamWriter escritor = new OutputStreamWriter(rootView.getContext().openFileOutput("compresos.txt", Context.MODE_PRIVATE));
+                        escritor.write("true\\\\" + compresor.getNombreOriginal() + "\\\\ratio\\\\factor\\\\" + compresor.ubicacionArchivo + "\n");
+                        escritor.close();*/
+                        Toast.makeText(getActivity(), "Se realizó la compresión del archivo", Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        Toast.makeText(rootView.getContext(), "Hubo un error escribiendo el archivo", Toast.LENGTH_LONG).show();
+                    }
                 } else {
                     CharSequence textoError = "Debe ingresar un nombre para el archivo";
                     Toast.makeText(getActivity(), textoError, Toast.LENGTH_LONG).show();

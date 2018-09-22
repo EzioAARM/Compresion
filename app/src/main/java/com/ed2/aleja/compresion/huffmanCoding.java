@@ -153,224 +153,199 @@ public class huffmanCoding {
         return false;
     }
 
-    public void decode(){
+    public void decode() {
         String decode = "";
         int f = 0;
         try {
-            int ch = (int)res.charAt(0);
+            int ch = (int) res.charAt(0);
             int size = res.length();
-            char caracter = (char)ch;
+            char caracter = (char) ch;
             String cadenaF = "";
             String aux = "";
-            while (f < res.length()-1) {
-                aux = Integer.toString(ch,2);
-                for(int t = 0; t < (8-aux.length());t++){
+            while (f < res.length() - 1) {
+                aux = Integer.toString(ch, 2);
+                for (int t = 0; t < (8 - aux.length()); t++) {
                     cadenaF += "0";
                 }
                 decode = decode + cadenaF + aux;
                 cadenaF = "";
                 f++;
-                ch = (int)res.charAt(f);
-                caracter = (char)ch;
+                ch = (int) res.charAt(f);
+                caracter = (char) ch;
 
             }
-<<<<<<< HEAD
-            char[]  caracteres = decode.toCharArray();
-            decode = "";
-            int temp = 0;
-            while (decodeCount < caracteres.length) {
-                for (int i = 0; i < hojas.size(); i++) {
-                    for (int j = temp; j < temp + hojas.get(i).codeWord.length(); j++) {
-                        decode = decode + caracteres[j];
-                        decodeCount++;
+
+                    String cadenaComparar = "";
+                    for (int i = 0; i < decode.length(); i++) {
+                        cadenaComparar += decode.charAt(i);
+                        if (buscarCodeWord(cadenaComparar)) {
+                            cadenaComparar = "";
+                        }
                     }
-                    temp = decodeCount;
-                    if (decode.equals(hojas.get(i).codeWord.trim())) {
-                        outPut = outPut + hojas.get(i).aChar;
+                    String cadena123123 = "";
+                }
+        catch(Exception e){
+                    Log.println(Log.DEBUG, "", e.toString());
+                }
+            }
+
+            public void decode (Uri uri){
+                String decode = "";
+                try {
+                    InputStream inputStream = Contexto.getContentResolver().openInputStream(uri);
+                    BufferedReader lector = new BufferedReader(new InputStreamReader(inputStream));
+                    int ch = lector.read();
+                    char caracter = (char) ch;
+                    while (ch != -1) {
+                        ch = ch >> 1;
+                        decode = decode + Integer.toBinaryString(ch);
+                        ch = lector.read();
+                        caracter = (char) ch;
                     }
-                    else {
-                        decodeCount = 0;
-                        temp = decodeCount;
-                    }
+                    char[] caracteres = decode.toCharArray();
                     decode = "";
-=======
-            String cadenaComparar = "";
-            for (int i = 0; i < decode.length(); i++) {
-                cadenaComparar += decode.charAt(i);
-                if (buscarCodeWord(cadenaComparar)) {
-                    cadenaComparar = "";
->>>>>>> master
+                    while (decodeCount != caracteres.length) {
+                        for (int i = 0; i < hojas.size(); i++) {
+                            for (int j = decodeCount; j < decodeCount + hojas.get(i).codeWord.length(); j++) {
+                                decode = decode + caracteres[j];
+                                decodeCount++;
+                            }
+                            if (decode == hojas.get(i).codeWord) {
+                                outPut = outPut + hojas.get(i).aChar;
+                            } else {
+                                decodeCount = 0;
+                            }
+                            decode = "";
+                        }
+                    }
+                } catch (Exception e) {
+
                 }
             }
-            String cadena123123 = "";
-        }
-        catch (Exception e){
-            Log.println(Log.DEBUG, "", e.toString());
-        }
-    }
 
-    public void decode(Uri uri){
-        String decode = "";
-        try {
-            InputStream inputStream = Contexto.getContentResolver().openInputStream(uri);
-            BufferedReader lector = new BufferedReader(new InputStreamReader(inputStream));
-            int ch = lector.read();
-            char caracter = (char)ch;
-            while (ch != -1) {
-                ch = ch >> 1;
-                decode = decode + Integer.toBinaryString(ch);
-                ch = lector.read();
-                caracter = (char)ch;
-            }
-            char[]  caracteres = decode.toCharArray();
-            decode = "";
-            while (decodeCount != caracteres.length) {
-                for (int i = 0; i < hojas.size(); i++) {
-                    for (int j = decodeCount; j < decodeCount + hojas.get(i).codeWord.length(); j++) {
-                        decode = decode + caracteres[j];
-                        decodeCount++;
-                    }
-                    if (decode == hojas.get(i).codeWord) {
-                        outPut = outPut + hojas.get(i).aChar;
-                    }
-                    else {
-                        decodeCount = 0;
-                    }
-                    decode = "";
-                }
-            }
-        }
-        catch (Exception e){
+            public void escribir () {
+                String code = "";
+                char[] temp;
+                try {
+                    InputStream inputStream = Contexto.getContentResolver().openInputStream(miUri);
+                    BufferedReader lector = new BufferedReader(new InputStreamReader(inputStream));
+                    int ch = lector.read();
+                    char caracter = (char) ch;
+                    String codigo = "";
+                    int c = 0;
+                    char[] chars = new char[flag];
+                    while (ch != -1) {
+                        code = tabla.get(caracter);
+                        temp = code.toCharArray();
+                        for (int i = 0; i < temp.length; i++) {
+                            if (pointer == 8) {
+                                chars[indice] = (char) Integer.parseInt(codigo, 2);
+                                codigo = "";
+                                indice++;
+                                pointer = 0;
+                            }
+                            codigo = codigo + temp[i];
+                            pointer++;
+                        }
 
-        }
-    }
-
-    public void escribir(){
-        String code = "";
-        char[] temp;
-        try {
-            InputStream inputStream = Contexto.getContentResolver().openInputStream(miUri);
-            BufferedReader lector = new BufferedReader(new InputStreamReader(inputStream));
-            int ch = lector.read();
-            char caracter = (char)ch;
-            String codigo = "";
-            int c = 0;
-            char[] chars = new char[flag];
-            while (ch != -1){
-                code = tabla.get(caracter);
-                temp = code.toCharArray();
-                for(int i = 0; i < temp.length; i++) {
-                    if(pointer == 8){
-                        chars[indice] = (char)Integer.parseInt(codigo, 2);
-                        codigo = "";
-                        indice++;
-                        pointer = 0;
+                        ch = lector.read();
+                        caracter = (char) ch;
                     }
-                    codigo = codigo + temp[i];
-                    pointer++;
+                    res = new String(chars);
+                    escribirArchivoCompreso(NombreOriginalArchivo, getNombreOriginal() + getTablaCaracteres() + res);
+                } catch (Exception e) {
+                    Log.println(Log.DEBUG, "", e.toString());
                 }
 
-                ch = lector.read();
-                caracter = (char)ch;
             }
-            res = new String(chars);
-            escribirArchivoCompreso(NombreOriginalArchivo, getNombreOriginal() + getTablaCaracteres() + res);
-        }
-        catch (Exception e){
-            Log.println(Log.DEBUG,"",e.toString());
-        }
 
-    }
-
-    public void getSimbolos(Uri uri){
-        miUri = uri;
-        try {
-            InputStream inputStream = Contexto.getContentResolver().openInputStream(uri);
-            BufferedReader lector = new BufferedReader(new InputStreamReader(inputStream));
-            int ch = lector.read();
-            char caracter = (char)ch;
-            simbolos.add(caracter);
-            while (ch != -1)
-            {
-                for (int i = 0; i < simbolos.size(); i++){
-                    if(caracter == simbolos.get(i)){
-                        break;
-                    }
-                    else if(i == simbolos.size() -1) {
-                        simbolos.add(caracter);
-                    }
-                }
+            public void getSimbolos (Uri uri){
+                miUri = uri;
+                try {
+                    InputStream inputStream = Contexto.getContentResolver().openInputStream(uri);
+                    BufferedReader lector = new BufferedReader(new InputStreamReader(inputStream));
+                    int ch = lector.read();
+                    char caracter = (char) ch;
+                    simbolos.add(caracter);
+                    while (ch != -1) {
+                        for (int i = 0; i < simbolos.size(); i++) {
+                            if (caracter == simbolos.get(i)) {
+                                break;
+                            } else if (i == simbolos.size() - 1) {
+                                simbolos.add(caracter);
+                            }
+                        }
                 /*if(checkR(caracter))
                 {
                     simbolosO.put(times, ch);
                 }*/
-                flag++;
-                ch = lector.read();
-                caracter = (char)ch;
+                        flag++;
+                        ch = lector.read();
+                        caracter = (char) ch;
+                    }
+                    lector.close();
+                    getFrecuencias(uri);
+                } catch (Exception e) {
+                    Log.println(Log.DEBUG, " ", e.toString());
+                }
             }
-            lector.close();
-            getFrecuencias(uri);
+
+            public void setNombreOriginal (String nombre){
+                NombreOriginalArchivo = nombre;
+            }
+
+            public String getNombreOriginal () {
+                return NombreOriginalArchivo + "☺☺";
+            }
+
+            private String getTablaCaracteres () {
+                String datos = "";
+                for (int i = 0; i < hojas.size(); i++) {
+                    datos += hojas.get(i).aChar + (char) (hojas.get(i).prob);
+                }
+                datos += "☺☺";
+                return datos;
+            }
+
+
+            public boolean escribirArchivoCompreso (String nombreArchivo, String contenido) throws
+            Exception {
+                File directorio = null;
+                if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
+                    directorio = new File(Environment.getExternalStorageDirectory() + "/CompresionesEstructuras/");
+                else
+                    directorio = new File(Contexto.getFilesDir() + "/CompresionesEstructuras/");
+                boolean dirCre = true;
+                if (!directorio.exists())
+                    dirCre = directorio.mkdirs();
+                if (!dirCre) {
+                    throw new Exception("No se pudo crear la ruta " + directorio.getAbsolutePath());
+                }
+                File archivoEscribir = new File(directorio.getAbsolutePath() + "/" + nombreArchivo + ".huff");
+                if (!archivoEscribir.createNewFile())
+                    throw new Exception("No se pudo crear el archivo " + directorio.getAbsolutePath());
+                FileOutputStream fileOutputStream = new FileOutputStream(archivoEscribir);
+                fileOutputStream.write(contenido.getBytes());
+                fileOutputStream.close();
+                ubicacionArchivo = archivoEscribir.getAbsolutePath();
+                return true;
+            }
+
+            public void escribirArchivo (String nombreArchivo, String extension, String contenido) throws
+            Exception {
+                File directorio = null;
+                directorio = new File(Contexto.getFilesDir() + "/DescompresionEstructuras/");
+                boolean dirCre = false;
+                if (!directorio.exists())
+                    dirCre = directorio.mkdirs();
+                if (!dirCre) {
+                    throw new Exception("No se pudo crear la ruta " + directorio.getAbsolutePath());
+                }
+                File archivoEscribir = new File(directorio.getAbsolutePath() + nombreArchivo + extension);
+                if (!archivoEscribir.createNewFile())
+                    throw new Exception("No se pudo crear el archivo " + archivoEscribir.getAbsolutePath());
+                FileOutputStream fileOutputStream = new FileOutputStream(directorio);
+                fileOutputStream.write(contenido.getBytes());
+                fileOutputStream.close();
+            }
         }
-        catch (Exception e)
-        {
-            Log.println(Log.DEBUG," ", e.toString());
-        }
-    }
-
-    public void setNombreOriginal(String nombre) {
-        NombreOriginalArchivo = nombre;
-    }
-
-    public String getNombreOriginal() {
-        return NombreOriginalArchivo + "☺☺";
-    }
-
-    private String getTablaCaracteres() {
-        String datos = "";
-        for (int i = 0; i < hojas.size(); i++) {
-            datos += hojas.get(i).aChar + (char) (hojas.get(i).prob);
-        }
-        datos += "☺☺";
-        return  datos;
-    }
-
-
-    public boolean escribirArchivoCompreso(String nombreArchivo, String contenido) throws Exception {
-        File directorio = null;
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
-            directorio = new File(Environment.getExternalStorageDirectory() + "/CompresionesEstructuras/");
-        else
-            directorio = new File(Contexto.getFilesDir() + "/CompresionesEstructuras/");
-        boolean dirCre = true;
-        if (!directorio.exists())
-            dirCre = directorio.mkdirs();
-        if (!dirCre) {
-            throw new Exception("No se pudo crear la ruta " + directorio.getAbsolutePath());
-        }
-        File archivoEscribir = new File(directorio.getAbsolutePath() + "/" + nombreArchivo + ".huff");
-        if (!archivoEscribir.createNewFile())
-            throw new Exception("No se pudo crear el archivo " + directorio.getAbsolutePath());
-        FileOutputStream fileOutputStream = new FileOutputStream(archivoEscribir);
-        fileOutputStream.write(contenido.getBytes());
-        fileOutputStream.close();
-        ubicacionArchivo = archivoEscribir.getAbsolutePath();
-        return true;
-    }
-
-    public void escribirArchivo(String nombreArchivo, String extension, String contenido) throws Exception {
-        File directorio = null;
-        directorio = new File(Contexto.getFilesDir() + "/DescompresionEstructuras/");
-        boolean dirCre = false;
-        if (!directorio.exists())
-            dirCre = directorio.mkdirs();
-        if (!dirCre) {
-            throw new Exception("No se pudo crear la ruta " + directorio.getAbsolutePath());
-        }
-        File archivoEscribir = new File(directorio.getAbsolutePath() + nombreArchivo + extension);
-        if (!archivoEscribir.createNewFile())
-            throw new Exception("No se pudo crear el archivo " + archivoEscribir.getAbsolutePath());
-        FileOutputStream fileOutputStream = new FileOutputStream(directorio);
-        fileOutputStream.write(contenido.getBytes());
-        fileOutputStream.close();
-    }
-}

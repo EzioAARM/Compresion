@@ -6,7 +6,7 @@
     tools:context=".ComprimirFragment">
 
     <TextView
-        android:id="@+id/nombreArchivo"
+        android:id="@+id/nombre_archivo"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -21,8 +21,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/ic_upload_dark"
-        android:layout_alignRight="@+id/nombreArchivo"
-        android:layout_below="@+id/nombreArchivo"
+        android:layout_alignRight="@+id/nombre_archivo"
+        android:layout_below="@+id/nombre_archivo"
         android:background="@color/colorSecondary"
         android:text="@string/file_chooser"
         style="@style/ButtonMaterial"/>

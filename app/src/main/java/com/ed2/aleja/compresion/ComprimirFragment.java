@@ -32,7 +32,6 @@ import static android.app.Activity.RESULT_OK;
 public class ComprimirFragment extends Fragment {
 
     private int valorRetornado = 1;
-    public huffmanCoding compresor;
     public String nombre;
     CharSequence texto = "";
     Uri uri = null;
@@ -42,7 +41,9 @@ public class ComprimirFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.comprimir_fragment, container, false);
-        Button boton = (Button) rootView.findViewById(R.id.examinar_comprimir);
+
+        // Muestra dialogo de seleccionar archivo
+        Button boton = rootView.findViewById(R.id.examinar_comprimir);
         boton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,24 +54,36 @@ public class ComprimirFragment extends Fragment {
                 startActivityForResult(Intent.createChooser(intent, "Seleccionar archivo"), valorRetornado);
             }
         });
-        final Button comprimir = (Button) rootView.findViewById(R.id.comprimir_archivo);
+
+        // Boton para hacer la compresión del archivo
+        final Button comprimir = rootView.findViewById(R.id.comprimir_archivo);
         comprimir.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                EditText nombreArchivoCompreso = (EditText) rootView.findViewById(R.id.nombre_archivo_compreso);
+                EditText nombreArchivoCompreso = rootView.findViewById(R.id.nombre_archivo_compreso);
+                TextView nombreArchivoOriginal = rootView.findViewById(R.id.nombre_archivo);
                 if (nombreArchivoCompreso.getText().length() != 0){
                     try {
-                        compresor = new huffmanCoding(uri, rootView.getContext());
-                        EditText nombreArchivoGuardar = (EditText) rootView.findViewById(R.id.nombre_archivo_compreso);
-                        compresor.setNombreOriginal(nombreArchivoGuardar.getText().toString());
-                        compresor.getSimbolos(uri);
+                        // Lee el archivo y carga el texto a la app
+                        InputStream inputStream = rootView.getContext().getContentResolver().openInputStream(uri);
+                        BufferedReader lector = new BufferedReader(new InputStreamReader(inputStream));
+                        String textoArchivo = "";
+                        int caracter;
+                        while ((caracter = lector.read()) != -1) {
+                            textoArchivo += (char) caracter;
+                        }
+
+                        // Crea la clase que realiza la compresión
+                        huffmanCoding compresor = new huffmanCoding(textoArchivo, rootView.getContext());
+                        compresor.setNombreOriginalArchivo(nombreArchivoOriginal.getText().toString());
+                        compresor.setNombreArchivoNuevo(nombreArchivoCompreso.getText().toString());
+                        compresor.Comprimir();
+
+                        // Guarda los datos de la compresión en un listado para mostrarlo en la pantalla principal
                         ListadoCompresos.getInstancia().compresos.add("1\\" + compresor.NombreOriginalArchivo + "\\0.015\\0.25\\" + compresor.ubicacionArchivo);
-                        /*OutputStreamWriter escritor = new OutputStreamWriter(rootView.getContext().openFileOutput("compresos.txt", Context.MODE_PRIVATE));
-                        escritor.write("true\\\\" + compresor.getNombreOriginal() + "\\\\ratio\\\\factor\\\\" + compresor.ubicacionArchivo + "\n");
-                        escritor.close();*/
                         Toast.makeText(getActivity(), "Se realizó la compresión del archivo", Toast.LENGTH_SHORT).show();
                     } catch (Exception e) {
-                        Toast.makeText(rootView.getContext(), "Hubo un error escribiendo el archivo", Toast.LENGTH_LONG).show();
+                        Toast.makeText(rootView.getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 } else {
                     CharSequence textoError = "Debe ingresar un nombre para el archivo";
@@ -78,6 +91,7 @@ public class ComprimirFragment extends Fragment {
                 }
             }
         });
+
         return rootView;
     }
 
@@ -103,7 +117,7 @@ public class ComprimirFragment extends Fragment {
             } else if (uri.toString().startsWith("file://")) {
                 nombre = archivo.getAbsolutePath().toString();
             }
-            TextView mostrarUbicacion = rootView.findViewById(R.id.nombreArchivo);
+            TextView mostrarUbicacion = rootView.findViewById(R.id.nombre_archivo);
             mostrarUbicacion.setText(nombre);
         }
     }

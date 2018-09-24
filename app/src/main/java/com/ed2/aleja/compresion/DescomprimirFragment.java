@@ -68,10 +68,17 @@ public class DescomprimirFragment extends Fragment {
                             textoArchivo += (char) caracter;
                             caracter = lector.read();
                         }
-
-                        // Crea la clase que realiza la compresión
-                        huffmanCoding compresor = new huffmanCoding(textoArchivo, rootView.getContext());
-                        compresor.Descomprimir();
+                        TextView nombreDelArchivo = (TextView) rootView.findViewById(R.id.nombre_archivo);
+                        String[] extension = nombreDelArchivo.getText().toString().split("\\.");
+                        if (extension[extension.length - 1].contains("huff")) {
+                            // Crea la clase que realiza la descompresión por huffman
+                            huffmanCoding compresor = new huffmanCoding(textoArchivo, rootView.getContext());
+                            compresor.Descomprimir();
+                        } else {
+                            // Crea la clase que realiza la descompresión por lzw
+                            CompresionLzw lzw = new CompresionLzw(textoArchivo, rootView.getContext());
+                            lzw.Descomprimir();
+                        }
 
                         Toast.makeText(getActivity(), "Se realizó la descompresión del archivo", Toast.LENGTH_SHORT).show();
                     } catch (Exception e) {

@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -73,14 +74,24 @@ public class ComprimirFragment extends Fragment {
                             textoArchivo += (char) caracter;
                         }
 
-                        // Crea la clase que realiza la compresión
-                        huffmanCoding compresor = new huffmanCoding(textoArchivo, rootView.getContext());
-                        compresor.setNombreOriginalArchivo(nombreArchivoOriginal.getText().toString());
-                        compresor.setNombreArchivoNuevo(nombreArchivoCompreso.getText().toString());
-                        compresor.Comprimir();
+                        Switch metodoComrpesion = (Switch) rootView.findViewById(R.id.metodo_compresion);
+                        if (metodoComrpesion.isChecked()) {
+                            // Crea la clase que realiza la compresión por huffman
+                            huffmanCoding compresor = new huffmanCoding(textoArchivo, rootView.getContext());
+                            compresor.setNombreOriginalArchivo(nombreArchivoOriginal.getText().toString());
+                            compresor.setNombreArchivoNuevo(nombreArchivoCompreso.getText().toString());
+                            compresor.Comprimir();
+                            // Guarda los datos de la compresión en un listado para mostrarlo en la pantalla principal
+                            ListadoCompresos.getInstancia().compresos.add("1\\" + compresor.NombreOriginalArchivo + "\\0.015\\0.25\\" + compresor.ubicacionArchivo);
+                        } else {
+                            // Crea la clase que realiza la compresión por LZW
+                            CompresionLzw compresor = new CompresionLzw(textoArchivo, rootView.getContext());
+                            compresor.setNombreOriginalArchivo(nombreArchivoOriginal.getText().toString());
+                            compresor.setNombreArchivoNuevo(nombreArchivoCompreso.getText().toString());
+                            compresor.Comprimir();
+                        }
 
-                        // Guarda los datos de la compresión en un listado para mostrarlo en la pantalla principal
-                        ListadoCompresos.getInstancia().compresos.add("1\\" + compresor.NombreOriginalArchivo + "\\0.015\\0.25\\" + compresor.ubicacionArchivo);
+
                         Toast.makeText(getActivity(), "Se realizó la compresión del archivo", Toast.LENGTH_SHORT).show();
                     } catch (Exception e) {
                         Toast.makeText(rootView.getContext(), e.getMessage(), Toast.LENGTH_LONG).show();

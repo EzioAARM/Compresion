@@ -240,19 +240,26 @@ public class huffmanCoding {
 
     public void escribirArchivoDescompreso(String nombreArchivo, String contenido) throws Exception {
         File directorio = null;
-        directorio = new File(Contexto.getFilesDir() + "/DescompresionEstructuras/");
-        boolean dirCre = false;
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
+            directorio = new File(Environment.getExternalStorageDirectory() + "/DescompresionesEstructuras/");
+        else
+            directorio = new File(Contexto.getFilesDir() + "/DescompresionesEstructuras/");
+        boolean dirCre = true;
         if (!directorio.exists())
             dirCre = directorio.mkdirs();
         if (!dirCre) {
             throw new Exception("No se pudo crear la ruta " + directorio.getAbsolutePath());
         }
-        File archivoEscribir = new File(directorio.getAbsolutePath() + nombreArchivo);
-        if (!archivoEscribir.createNewFile())
-            throw new Exception("No se pudo crear el archivo " + archivoEscribir.getAbsolutePath());
-        FileOutputStream fileOutputStream = new FileOutputStream(directorio);
-        fileOutputStream.write(contenido.getBytes());
-        fileOutputStream.close();
+        File archivoEscribir = new File(directorio.getAbsolutePath() + "/" + nombreArchivo);
+        if (archivoEscribir.exists()) {
+            throw new Exception("El archivo " + nombreArchivo + " ya existe");
+        } else {
+            if (!archivoEscribir.createNewFile())
+                throw new Exception("No se pudo crear el archivo " + archivoEscribir.getAbsolutePath());
+            FileOutputStream fileOutputStream = new FileOutputStream(archivoEscribir);
+            fileOutputStream.write(contenido.getBytes());
+            fileOutputStream.close();
+        }
     }
 
     private void separarContenido() throws Exception {

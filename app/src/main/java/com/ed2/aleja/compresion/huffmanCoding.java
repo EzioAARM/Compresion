@@ -32,6 +32,7 @@ import java.util.TreeMap;
 public class huffmanCoding {
     // Generales
     ArrayList<node> ListaNodos = new ArrayList<>();
+    ArrayList<node> ListaAux = new ArrayList<>();
     ArrayList<node> Hojas = new ArrayList<>();
     Map<Character, String> tabla = new TreeMap<>();
     boolean compresion = true;
@@ -57,6 +58,8 @@ public class huffmanCoding {
         build();
         traverse(ListaNodos.get(0));
         generarCompresion();
+        ListaNodos.clear(); //limpio la lista de nodos por di acaso
+        Hojas.clear();
     }
 
     private void getSimbolos() throws Exception {
@@ -96,8 +99,21 @@ public class huffmanCoding {
         }
     }
 
+    public  void copy(){
+        char aTemp;
+        int pTemp;
+        node temp;
+        for(int i = 0; i < ListaNodos.size(); i++){
+            aTemp = ListaNodos.get(i).aChar;
+            pTemp = ListaNodos.get(i).prob;
+            temp = new node(pTemp, aTemp);
+            ListaAux.add(temp);
+        }
+    }
+
     private  void build() throws Exception {
         mySort();
+        copy();
         node temp;
         int freqT;
         while (ListaNodos.size() > 1) {
@@ -213,6 +229,7 @@ public class huffmanCoding {
         for (int i = 0; i < cadenaBinario.length(); i++) {
             if (buscarCodeWord(busquedaCode)) {
                 busquedaCode = "";
+                i--;
             } else {
 
                 busquedaCode += cadenaBinario.charAt(i);
@@ -294,18 +311,19 @@ public class huffmanCoding {
     }
 
     private String getTablaCaracteres () {
+        //use ListaAux para la tabla de caracteres.
         String datos = "";
         String numero = "";
         String ceros = "";
-        for (int i = 0; i < Hojas.size(); i++) {
-            if (String.valueOf(Hojas.get(i).prob).length() < 4) {
-                for (int j = 0; j < (4 - String.valueOf(Hojas.get(i).prob).length()); j++){
+        for (int i = 0; i < ListaAux.size(); i++) {
+            if (String.valueOf(ListaAux.get(i).prob).length() < 4) {
+                for (int j = 0; j < (4 - String.valueOf(ListaAux.get(i).prob).length()); j++){
                     ceros += "0";
                 }
-                numero = ceros + String.valueOf(Hojas.get(i).prob);
+                numero = ceros + String.valueOf(ListaAux.get(i).prob);
                 ceros = "";
             }
-            datos += String.valueOf(Hojas.get(i).aChar) + numero;
+            datos += String.valueOf(ListaAux.get(i).aChar) + numero;
         }
         datos += "☺☺";
         return datos;

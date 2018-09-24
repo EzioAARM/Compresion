@@ -34,7 +34,7 @@ public class CompresionLzw {
         List<Integer> Compreso = new ArrayList<>();
         String actual = "", siguiente = "";
         int compreso = 0;
-        for (int i = 1; i < TextoArchivo.length() - 1; i++){
+        for (int i = 0; i < TextoArchivo.length() - 1; i++){
             actual = String.valueOf(TextoArchivo.charAt(i));
             for (int j = i + 1; j < TextoArchivo.length(); j++) {
                 siguiente = String.valueOf(TextoArchivo.charAt(j));
@@ -92,10 +92,10 @@ public class CompresionLzw {
     }
 
     private void ObtenerCaracteres(){
-        String caracter = String.valueOf(TextoArchivo.charAt(1));
+        String caracter = String.valueOf(TextoArchivo.charAt(0));
         TablaCaracteres.put(caracter, contadorCaracteres);
         TablaEscribir.add(caracter + "01");
-        for (int i = 2; i < TextoArchivo.length(); i++) {
+        for (int i = 1; i < TextoArchivo.length(); i++) {
             caracter = String.valueOf(TextoArchivo.charAt(i));
             if (TablaCaracteres.get(caracter) == null) {
                 TablaCaracteres.put(caracter, contadorCaracteres);
@@ -107,6 +107,52 @@ public class CompresionLzw {
                 contadorCaracteres++;
             }
         }
+    }
+
+    // Proceso de descompresión
+    public void Descomprimir() {
+        separarContenido();
+        String CadenaDescompresa = "";
+        String anterior = "", actual = "";
+        for (int i = 1; i < TextoArchivo.length(); i++) {
+            actual = String.valueOf(TextoArchivo.charAt(i));
+        }
+    }
+
+    private void separarContenido() {
+        String nombre = "";
+        for (int i = 0; i < TextoArchivo.length(); i++) {
+            if (TextoArchivo.charAt(i) != '|') {
+                nombre += String.valueOf(TextoArchivo.charAt(i));
+            } else {
+                TextoArchivo = TextoArchivo.substring(i + 1);
+                i = TextoArchivo.length();
+            }
+        }
+        setNombreOriginalArchivo(nombre);
+        String tablaCaracteres = "";
+        for (int i = 0; i < TextoArchivo.length(); i++) {
+            if (String.valueOf(TextoArchivo.charAt(i)).equals("|") && String.valueOf(TextoArchivo.charAt(i + 1)).equals("|")) {
+                TextoArchivo = TextoArchivo.substring(i + 2);
+                i = TextoArchivo.length();
+            } else {
+                tablaCaracteres += TextoArchivo.charAt(i);
+            }
+        }
+        String caracterAparicion = "";
+        String caracter = "";
+        while (tablaCaracteres.length() > 0) {
+            caracter = String.valueOf(tablaCaracteres.charAt(0));
+            tablaCaracteres = tablaCaracteres.substring(1);
+            for (int i = 0; i < 2; i++) {
+                caracterAparicion += String.valueOf(tablaCaracteres.charAt(i));
+            }
+            tablaCaracteres = tablaCaracteres.substring(2);
+            TablaCaracteres.put(caracter, Integer.parseInt(caracterAparicion));
+            caracter = "";
+            caracterAparicion = "";
+        }
+        contadorCaracteres = TablaCaracteres.size();
     }
 
     // Extras

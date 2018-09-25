@@ -48,6 +48,9 @@ public class AdaptadorListViewItem extends BaseAdapter {
 
         if (item.getImgCompresion() == 1)
             imgMetodoComrpesion.setImageResource(R.drawable.ic_huffman_light);
+        else
+            imgMetodoComrpesion.setImageResource(R.drawable.ic_lzw_light);
+
         nombreArchivoCompreso.setText(item.getNombreArchivoCompreso());
         ratioCompresion.setText(item.getRatioCompresion());
         factorComrpesion.setText(item.getFactorCompresion());

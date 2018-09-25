@@ -27,29 +27,6 @@
         android:text="@string/file_chooser"
         style="@style/ButtonMaterial"/>
 
-    <EditText
-        android:id="@+id/nombre_archivo_descompreso"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="125dp"
-        android:inputType="textPersonName"
-        android:textSize="17dp"
-        android:hint="Nombre del archivo descompreso" />
-
-    <TextView
-        android:id="@+id/informacion_nombre_descompreso"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/nombre_archivo_descompreso"
-        android:layout_alignLeft="@id/nombre_archivo_descompreso"
-        android:layout_marginLeft="3dp"
-        android:layout_marginTop="40dp"
-        android:textSize="11dp"
-        android:text="No incluir la extensión del archivo" />
-
     <Button
         android:id="@+id/descomprimir_archivo_alone"
         android:layout_width="wrap_content"
@@ -61,17 +38,5 @@
         android:text="Descomprimir"
         android:drawableLeft="@drawable/ic_descomprimir_light"
         style="@style/ButtonMaterial" />
-
-    <TextView
-        android:id="@+id/mostrar_descompreso"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
-        android:layout_marginTop="200dp"
-        android:layout_marginBottom="100dp"
-        android:scrollbars="vertical" />
 
 </RelativeLayout>

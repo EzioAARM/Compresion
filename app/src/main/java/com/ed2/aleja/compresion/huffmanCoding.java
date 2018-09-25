@@ -36,6 +36,8 @@ public class huffmanCoding {
     ArrayList<node> Hojas = new ArrayList<>();
     Map<Character, String> tabla = new TreeMap<>();
     boolean compresion = true;
+    public double Factor;
+    public double Razon;
 
 
     String TextoArchivo;
@@ -174,6 +176,8 @@ public class huffmanCoding {
                 caracterNuevo = caracterNuevo + comodin;
             }
         }
+        Razon = (String.valueOf(extras).length() + getNombreOriginalArchivo().length() + 2 + getTablaCaracteres().length() + cadenaEscribir.length()) / TextoArchivo.length();
+        Factor = TextoArchivo.length() / (String.valueOf(extras).length() + getNombreOriginalArchivo().length() + 2 + getTablaCaracteres().length() + cadenaEscribir.length());
         escribirArchivoCompreso(getNombreArchivoNuevo(), String.valueOf(extras) + getNombreOriginalArchivo() + "☺☺" + getTablaCaracteres() + cadenaEscribir);
     }
 

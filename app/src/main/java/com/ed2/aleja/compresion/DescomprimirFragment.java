@@ -56,38 +56,32 @@ public class DescomprimirFragment extends Fragment {
         comprimir.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                EditText nombreArchivoCompreso = rootView.findViewById(R.id.nombre_archivo_descompreso);
-                if (nombreArchivoCompreso.getText().length() != 0){
-                    try {
-                        // Lee el archivo y carga el texto a la app
-                        InputStream inputStream = rootView.getContext().getContentResolver().openInputStream(uri);
-                        BufferedReader lector = new BufferedReader(new InputStreamReader(inputStream));
-                        String textoArchivo = "";
-                        int caracter = lector.read();
-                        while (caracter != -1) {
-                            textoArchivo += (char) caracter;
-                            caracter = lector.read();
-                        }
-                        TextView nombreDelArchivo = (TextView) rootView.findViewById(R.id.nombre_archivo);
-                        String[] extension = nombreDelArchivo.getText().toString().split("\\.");
-                        if (extension[extension.length - 1].contains("huff")) {
-                            // Crea la clase que realiza la descompresión por huffman
-                            huffmanCoding compresor = new huffmanCoding(textoArchivo, rootView.getContext());
-                            compresor.Descomprimir();
-                        } else {
-                            // Crea la clase que realiza la descompresión por lzw
-                            CompresionLzw lzw = new CompresionLzw(textoArchivo, rootView.getContext());
-                            lzw.Descomprimir();
-                        }
-
-                        Toast.makeText(getActivity(), "Se realizó la descompresión del archivo", Toast.LENGTH_SHORT).show();
-                    } catch (Exception e) {
-                        Toast.makeText(rootView.getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                } else {
-                    CharSequence textoError = "Debe ingresar un nombre para el archivo";
-                    Toast.makeText(getActivity(), textoError, Toast.LENGTH_LONG).show();
+            try {
+                // Lee el archivo y carga el texto a la app
+                InputStream inputStream = rootView.getContext().getContentResolver().openInputStream(uri);
+                BufferedReader lector = new BufferedReader(new InputStreamReader(inputStream));
+                String textoArchivo = "";
+                int caracter = lector.read();
+                while (caracter != -1) {
+                    textoArchivo += (char) caracter;
+                    caracter = lector.read();
                 }
+                TextView nombreDelArchivo = (TextView) rootView.findViewById(R.id.nombre_archivo);
+                String[] extension = nombreDelArchivo.getText().toString().split("\\.");
+                if (extension[extension.length - 1].contains("huff")) {
+                    // Crea la clase que realiza la descompresión por huffman
+                    huffmanCoding compresor = new huffmanCoding(textoArchivo, rootView.getContext());
+                    compresor.Descomprimir();
+                } else {
+                    // Crea la clase que realiza la descompresión por lzw
+                    CompresionLzw lzw = new CompresionLzw(textoArchivo, rootView.getContext());
+                    lzw.Descomprimir();
+                }
+
+                Toast.makeText(getActivity(), "Se realizó la descompresión del archivo", Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                Toast.makeText(rootView.getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            }
             }
         });
 

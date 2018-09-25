@@ -5,6 +5,8 @@ import android.os.Environment;
 import android.support.design.widget.TabLayout;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
@@ -19,6 +21,8 @@ public class CompresionLzw {
     private Map<Integer, String> TablaCaracteresInversa = new TreeMap<>();
     private ArrayList<String> TablaEscribir = new ArrayList<>();
     int contadorCaracteres = 2;
+    public double Factor;
+    public double Razon;
 
     public String NombreArchivoNuevo = "";
     public String NombreOriginalArchivo = "";
@@ -60,6 +64,8 @@ public class CompresionLzw {
             TextoCompreso += String.valueOf((char) NumeroActual);
         }
         String ContenidoTabla = getContenidoTabla();
+        Factor = TextoArchivo.length() / (NombreOriginalArchivo.length() + 1 + ContenidoTabla.length() + 2 + TextoCompreso.length());
+        Razon = (NombreOriginalArchivo.length() + 1 + ContenidoTabla.length() + 2 + TextoCompreso.length()) / TextoArchivo.length();
         escribirArchivoCompreso(NombreArchivoNuevo, NombreOriginalArchivo + "|" + ContenidoTabla + "||" + TextoCompreso);
     }
 

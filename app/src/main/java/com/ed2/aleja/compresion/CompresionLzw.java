@@ -141,6 +141,7 @@ public class CompresionLzw {
         String anterior = "";
         int asciiActual = 0;
         String actual = "";
+        CadenaDescompresa = TablaCaracteresInversa.get(asciiActual);
         for (int i = 1; i < TextoArchivo.length(); i++) {
             asciiActual = (int) TextoArchivo.charAt(i);
             actual = String.valueOf(TablaCaracteresInversa.get(asciiActual));

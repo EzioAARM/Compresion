@@ -16,6 +16,7 @@ public class CompresionLzw {
     private String TextoArchivo;
     private Context Contexto;
     private Map<String, Integer> TablaCaracteres = new TreeMap<>();
+    private Map<Integer, String> TablaCaracteresInversa = new TreeMap<>();
     private ArrayList<String> TablaEscribir = new ArrayList<>();
     int contadorCaracteres = 2;
 
@@ -34,7 +35,8 @@ public class CompresionLzw {
         List<Integer> Compreso = new ArrayList<>();
         String actual = "", siguiente = "";
         int compreso = 0;
-        for (int i = 0; i < TextoArchivo.length() - 1; i++){
+        Compreso.add(1);
+        for (int i = 1; i < TextoArchivo.length() - 1; i++){
             actual = String.valueOf(TextoArchivo.charAt(i));
             for (int j = i + 1; j < TextoArchivo.length(); j++) {
                 siguiente = String.valueOf(TextoArchivo.charAt(j));
@@ -110,12 +112,50 @@ public class CompresionLzw {
     }
 
     // Proceso de descompresión
-    public void Descomprimir() {
+    public void Descomprimir() throws Exception {
         separarContenido();
         String CadenaDescompresa = "";
-        String anterior = "", actual = "";
+        int asciiAnterior = (int) TextoArchivo.charAt(0);
+        String anterior = "";
+        int asciiActual = 0;
+        String actual = "";
         for (int i = 1; i < TextoArchivo.length(); i++) {
-            actual = String.valueOf(TextoArchivo.charAt(i));
+            asciiActual = (int) TextoArchivo.charAt(i);
+            actual = String.valueOf(TablaCaracteresInversa.get(asciiActual));
+            actual = String.valueOf(actual.charAt(0));
+            if (TablaCaracteres.get(anterior + actual) == null) {
+                contadorCaracteres++;
+                TablaCaracteres.put(anterior + actual, contadorCaracteres);
+                TablaCaracteresInversa.put(contadorCaracteres, anterior + actual);
+            }
+            CadenaDescompresa += TablaCaracteresInversa.get(asciiActual);
+            asciiAnterior = asciiActual;
+            anterior = String.valueOf(TablaCaracteresInversa.get(asciiAnterior));
+        }
+        escribirArchivoDescompreso(getNombreOriginalArchivo(), CadenaDescompresa);
+    }
+
+    public void escribirArchivoDescompreso(String nombreArchivo, String contenido) throws Exception {
+        File directorio = null;
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
+            directorio = new File(Environment.getExternalStorageDirectory() + "/DescompresionesEstructuras/");
+        else
+            directorio = new File(Contexto.getFilesDir() + "/DescompresionesEstructuras/");
+        boolean dirCre = true;
+        if (!directorio.exists())
+            dirCre = directorio.mkdirs();
+        if (!dirCre) {
+            throw new Exception("No se pudo crear la ruta " + directorio.getAbsolutePath());
+        }
+        File archivoEscribir = new File(directorio.getAbsolutePath() + "/" + nombreArchivo);
+        if (archivoEscribir.exists()) {
+            throw new Exception("El archivo " + nombreArchivo + " ya existe");
+        } else {
+            if (!archivoEscribir.createNewFile())
+                throw new Exception("No se pudo crear el archivo " + archivoEscribir.getAbsolutePath());
+            FileOutputStream fileOutputStream = new FileOutputStream(archivoEscribir);
+            fileOutputStream.write(contenido.getBytes());
+            fileOutputStream.close();
         }
     }
 
@@ -149,10 +189,11 @@ public class CompresionLzw {
             }
             tablaCaracteres = tablaCaracteres.substring(2);
             TablaCaracteres.put(caracter, Integer.parseInt(caracterAparicion));
+            TablaCaracteresInversa.put(Integer.parseInt(caracterAparicion), caracter);
             caracter = "";
             caracterAparicion = "";
         }
-        contadorCaracteres = TablaCaracteres.size();
+        contadorCaracteres = TablaCaracteresInversa.size();
     }
 
     // Extras

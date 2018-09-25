@@ -176,8 +176,23 @@ public class huffmanCoding {
                 caracterNuevo = caracterNuevo + comodin;
             }
         }
-        Razon = (String.valueOf(extras).length() + getNombreOriginalArchivo().length() + 2 + getTablaCaracteres().length() + cadenaEscribir.length()) / TextoArchivo.length();
-        Factor = TextoArchivo.length() / (String.valueOf(extras).length() + getNombreOriginalArchivo().length() + 2 + getTablaCaracteres().length() + cadenaEscribir.length());
+        double cantidadTemp = (String.valueOf(extras).length() + getNombreOriginalArchivo().length() + 2 + getTablaCaracteres().length() + cadenaEscribir.length());
+        double originalTemp = TextoArchivo.length();
+        Factor = originalTemp / cantidadTemp;
+        String temp;
+        if (String.valueOf(Factor).length() > 7){
+            temp = String.valueOf(Factor).substring(0, 7);
+        } else {
+            temp = String.valueOf(Factor);
+        }
+        Factor = Double.parseDouble(temp);
+        Razon = cantidadTemp / originalTemp;
+        if (String.valueOf(Razon).length() > 7) {
+            temp = String.valueOf(Razon).substring(0, 7);
+        } else {
+            temp = String.valueOf(Razon);
+        }
+        Razon = Double.parseDouble(temp);
         escribirArchivoCompreso(getNombreArchivoNuevo(), String.valueOf(extras) + getNombreOriginalArchivo() + "☺☺" + getTablaCaracteres() + cadenaEscribir);
     }
 

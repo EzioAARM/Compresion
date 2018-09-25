@@ -38,7 +38,7 @@ public class CompresosFragment extends Fragment {
                     esHuff = true;
                 else
                     esHuff = false;
-                listadoItems.add(new ListViewItem(esHuff, contenido[1], Double.parseDouble(contenido[2]), Double.parseDouble(contenido[3])));
+                listadoItems.add(new ListViewItem(esHuff, contenido[1], Double.parseDouble(contenido[2]), Double.parseDouble(contenido[3]), contenido[4]));
                 i++;
             }
             AdaptadorListViewItem adaptadorListViewItem = new AdaptadorListViewItem(listadoItems, rootView.getContext());

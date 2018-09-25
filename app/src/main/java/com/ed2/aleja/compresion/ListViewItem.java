@@ -7,8 +7,9 @@ public class ListViewItem {
     private String NombreArchivoCompreso;
     private String RatioCompresion;
     private String FactorCompresion;
+    private String RutaCompresion;
 
-    public ListViewItem(boolean esHuffman, String nombreArchivoCompreso, double ratioCompresion, double factorCompresion){
+    public ListViewItem(boolean esHuffman, String nombreArchivoCompreso, double ratioCompresion, double factorCompresion, String ruta){
         if (esHuffman){
             ImgCompresion = 1;
         } else {
@@ -17,6 +18,7 @@ public class ListViewItem {
         NombreArchivoCompreso = nombreArchivoCompreso;
         RatioCompresion = "Ratio: " + String.valueOf(ratioCompresion);
         FactorCompresion = "Factor: " + String.valueOf(factorCompresion);
+        RutaCompresion = ruta;
     }
 
     public int getImgCompresion(){
@@ -33,5 +35,9 @@ public class ListViewItem {
 
     public String getFactorCompresion(){
         return FactorCompresion;
+    }
+
+    public String getRutaCompresion() {
+        return RutaCompresion;
     }
 }

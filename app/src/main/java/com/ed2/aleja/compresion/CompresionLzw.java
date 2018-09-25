@@ -9,6 +9,7 @@ import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -64,8 +65,23 @@ public class CompresionLzw {
             TextoCompreso += String.valueOf((char) NumeroActual);
         }
         String ContenidoTabla = getContenidoTabla();
-        Factor = TextoArchivo.length() / (NombreOriginalArchivo.length() + 1 + ContenidoTabla.length() + 2 + TextoCompreso.length());
-        Razon = (NombreOriginalArchivo.length() + 1 + ContenidoTabla.length() + 2 + TextoCompreso.length()) / TextoArchivo.length();
+        double cantidadTemp = (NombreOriginalArchivo.length() + 1 + ContenidoTabla.length() + 2 + TextoCompreso.length());
+        double originalTemp = TextoArchivo.length();
+        Factor = originalTemp / cantidadTemp;
+        String temp;
+        if (String.valueOf(Factor).length() > 7){
+            temp = String.valueOf(Factor).substring(0, 7);
+        } else {
+            temp = String.valueOf(Factor);
+        }
+        Factor = Double.parseDouble(temp);
+        Razon = cantidadTemp / originalTemp;
+        if (String.valueOf(Razon).length() > 7) {
+            temp = String.valueOf(Razon).substring(0, 7);
+        } else {
+            temp = String.valueOf(Razon);
+        }
+        Razon = Double.parseDouble(temp);
         escribirArchivoCompreso(NombreArchivoNuevo, NombreOriginalArchivo + "|" + ContenidoTabla + "||" + TextoCompreso);
     }
 

@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 public class AdaptadorListViewItem extends BaseAdapter {
@@ -43,14 +45,19 @@ public class AdaptadorListViewItem extends BaseAdapter {
         TextView nombreArchivoCompreso = (TextView) convertView.findViewById(R.id.nombre_archivo);
         TextView ratioCompresion = (TextView) convertView.findViewById(R.id.ratio_compresion);
         TextView factorComrpesion = (TextView) convertView.findViewById(R.id.factor_compresion);
+        TextView rutaComrpesion = (TextView) convertView.findViewById(R.id.ruta_archivo);
 
         ListViewItem item = (ListViewItem) getItem(position);
 
         if (item.getImgCompresion() == 1)
             imgMetodoComrpesion.setImageResource(R.drawable.ic_huffman_light);
+        else
+            imgMetodoComrpesion.setImageResource(R.drawable.ic_lzw_light);
+
         nombreArchivoCompreso.setText(item.getNombreArchivoCompreso());
         ratioCompresion.setText(item.getRatioCompresion());
         factorComrpesion.setText(item.getFactorCompresion());
+        rutaComrpesion.setText(item.getRutaCompresion());
 
 
         return convertView;
